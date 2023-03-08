@@ -12,7 +12,7 @@ const Navbar = () => {
         setNav(!nav)
     }
   return (
-    <div className='flex justify-between items-center h-24 max-w-[1240] px-4 text-white'>
+    <div className='flex justify-between items-center h-24 max-w-[1240] px-4 text-white sticky'>
         <img src={mLog} style={{ width: 60, height: 60 }}></img>
         <ul className='hidden md:flex'>
 
