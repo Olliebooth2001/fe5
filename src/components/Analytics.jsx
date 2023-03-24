@@ -3,11 +3,17 @@ import Chart from '../media/chart.png';
 import { Chart as ChartJS, BarElement,CategoryScale,LinearScale, Tooltip,Legend } from 'chart.js/auto';
 import {Doughnut,Bar,Pie,Line} from 'react-chartjs-2';
 import {AiOutlineClose,AiOutlineMenu,AiOutlineDashboard,AiOutlineInfoCircle,AiOutlineUpload} from 'react-icons/ai';
-
+import { useState } from "react";
+// import * as os from 'os';
+// import {TmpFilesystem, awaitWriteFinish} from "like-fs";
 
 const { DocumentAnalysisClient, AzureKeyCredential } = require("@azure/ai-form-recognizer");
 
-const fs = require("fs");
+// const fs = new TmpFilesystem({
+// 	tmpDirectory: os.tmpdir() + '/my-project'
+// });
+
+
 
 function getNotUnique(array) {
   var map = new Map();
@@ -16,14 +22,22 @@ function getNotUnique(array) {
 
 }
 
-const endpoint = "https://ollie-testfrom.cognitiveservicesss.azure.com/";
+const endpoint = "https://ollie-testfrom.cognitiveservices.azure.com/";
   const apiKey = "717032a4a8ea4d928a7401618329be07";
   const modelId = "d03e2758-8b7a-4d62-a953-eec10b1bd7ec";
   const path = "../media/document-4.pdf";
-  var readStream = "https://bankstatements.net/wp-content/uploads/2021/11/Lloyds-Bank-Statement-BankStatements.net_.jpg";
+  //const readStream = fs.createReadStream('../media/chart.png');
+ var readStream = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII";
   const client = new DocumentAnalysisClient(endpoint, new AzureKeyCredential(apiKey));
 
 var month = "";
+const map1 = new Map();
+map1.set('week1', 0);
+map1.set('week2', 0);
+map1.set('week3', 0);
+map1.set('week4', 0);
+
+
 
 async function testSubmit2(){
   readStream="https://bankstatements.net/wp-content/uploads/2021/10/Halifax-Bank-Statement-BankStatements.net_.jpg"
@@ -94,11 +108,7 @@ async function testSubmit() {
   var largest = fruits[0];
   var week1=0;var week2=0;var week3=0;var week4=0;
   var week1No=0;var week2No=0;var week3No=0;var week4No=0;
-  const map1 = new Map();
-    map1.set('week1', 0);
-    map1.set('week2', 0);
-    map1.set('week3', 0);
-    map1.set('week4', 0);
+ 
   var commonExpendature = [];
   for (const table of tables || []) {
     console.log(`- Table (${table.columnCount}x${table.rowCount})`);
@@ -222,6 +232,7 @@ async function testSubmit() {
     }
     document.getElementById('weeklySpending').innerHTML = ' Month of '+ month + ' number of transactions per week \n</br>' + month + ' 1<sup>st</sup> - 7<sup>th</sup>:  \n' + map1.get('week1')+'</br>  ' + month + ' 7<sup>th</sup> - 14<sup>th</sup>:  \n' + map1.get('week2')+'</br>  ' + month + ' 14<sup>th</sup> - 21<sup>st</sup>:  \n' + map1.get('week3')+'</br>  ' + month + ' 21<sup>st</sup> - End Of Month:  \n' + map1.get('week4')+'</br>  ' 
   }
+  
 }
 
 
@@ -300,11 +311,77 @@ var expensive = {
 
 
 
-
-
 const Analytics = () => {
+
+  var chartReference = {};
+
+const data2 = {
+  labels: ["1-7","7-14","14-21","21-End Of the Month"],
+  datasets:[
+    {
+      label:"July",
+      data:[6,10,4,6],
+      backgroundColor:'#75485E',
+      borderColor:'#75485E',
+      borderWidth:2,
+    },
+    {
+      label:"July",
+      data:[5,19,3,5],
+      backgroundColor:'#CB904D ',
+      borderColor:'#CB904D',
+      borderWidth:2,
+      
+    },
+]
+};
+
+var data3 = {
+  labels: ["1-7","7-14","14-21","21-End Of the Month"],
+  datasets:[
+    {
+      label: month,
+      data:[map1.get('week1'),map1.get('week2'),map1.get('week3'),map1.get('week4')],
+      backgroundColor:'#75485E',
+      borderColor:'#75485E',
+      borderWidth:2,
+    },
+    {
+      label:"July",
+      data:[5,19,3,5],
+      backgroundColor:'#CB904D ',
+      borderColor:'#CB904D',
+      borderWidth:2,
+      
+    },
+]
+};
+
+const options2 = {
+  scales: {
+    yAxes: [
+      {
+        ticks: {
+          beginAtZero: true,
+        },
+      },
+    ],
+  },
+};
+
+const [datav, setData] = useState(data2); // REMOVED BRACKETS
+const [options, setOptions] = useState(options2); // REMOVED BRACKETS
+
+const updatePlot = () => {
+  setData(data3);
+  setOptions(options2); // This is redundant for the purpose
+};
+
+
   return (
     <div>
+
+      <input type='file' onChange={testSubmit}/>
 
       <div className='flex flex-auto justify-center' id='dash'>
             <button onClick={testSubmit} className ='bg-[#00df9a] w-[300px] rounded-md font-bold my-6 mx-auto py-6 text-black flex flex-row justify-center hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300'> <AiOutlineUpload size={30}></AiOutlineUpload>UPLOAD FIRST STATEMENT</button>
@@ -321,8 +398,9 @@ const Analytics = () => {
                
                 <main role="main" class="w-full sm:w-2/3 md:w-6/12 pt-1 px-2 ">
                 <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Transactions Over June Compared to July</h1>
-                    <Line data={data}/>
-                    
+
+                    <Line data={datav} options={options} onUpdate={updatePlot}/>
+                    <button onClick={updatePlot}>yooo</button>
                 </main>
                 
                 
