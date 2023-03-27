@@ -1,6 +1,7 @@
 import React from 'react'
 import moneyLogo from '../media/mooney.gif'
-import {AiOutlineClose,AiOutlineMenu,AiOutlineDashboard,AiOutlineInfoCircle,AiOutlineUpload,AiOutlineArrowDown} from 'react-icons/ai'
+import Button from '@mui/material/Button';
+import {AiOutlineClose,AiOutlineMenu,AiOutlineDashboard,AiOutlineInfoCircle,AiOutlineUpload,AiOutlineCaretDown} from 'react-icons/ai'
 import Analytics from './Analytics'
 import {Link} from 'react-scroll'
 
@@ -20,9 +21,17 @@ const Hero = () => {
         </div>
 
         <p className='md:text-2xl text-xl font-bold text-gray-500 p-top p-4' >Upload your bank statement now to visualise your spending   </p>
-        <a className='bg-[#00df9a] w-[300px] rounded-md font-bold my-6 mx-auto py-6 text-black flex flex-row justify-center  hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300'><Link activeClass="active" to="dash" spy={true} smooth={true}>UPLOAD NOW </Link><AiOutlineArrowDown size={20}/></a>
+        
+        {/* <a className='bg-[#00df9a] w-[300px] rounded-md font-bold my-6 mx-auto py-6 text-black flex flex-row justify-center  hover:bg-gray-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300'><Link activeClass="active" to="heading1" spy={true} smooth={true}>UPLOAD NOW </Link><AiOutlineArrowDown size={20}/></a>  */}
+       
+        <div class="flex justify-center">
 
-    
+        <button id ='scrollToUploadBtn'class="bg-[#00B27B] hover:bg-[#004731] text-white font-bold py-2 px-4 rounded-full w-40">
+        <Link activeClass="active" to="heading1" spy={true} smooth={true}>Upload </Link>  <div class="flex justify-center">
+            <AiOutlineCaretDown style={{alignText:'center'}}size={30}/></div>
+            
+        </button>
+        </div>
       
       
       
