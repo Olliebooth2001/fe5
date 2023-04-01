@@ -5,6 +5,7 @@ import Analytics from "./components/Analytics";
 import Information from "./components/Information";
 import Footer from "./components/Footer";
 import ScrollButton from "./components/ScrollButton";
+import Disclaimer from "./components/Disclaimer";
 
 function App() {
   return (
@@ -13,6 +14,8 @@ function App() {
  <Navbar></Navbar>
  <Hero></Hero>
  <Information></Information>
+ <Disclaimer></Disclaimer>
+
  <Analytics></Analytics>
  <ScrollButton></ScrollButton>
  <Footer></Footer>

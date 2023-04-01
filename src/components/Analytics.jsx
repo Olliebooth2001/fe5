@@ -65,8 +65,10 @@ var percentagem1 = 0;var percentagem12 = 0;
 var threeCol = false;var threeCol2 = false;
 var debitField = false;
 var moneyIn = [];var moneyIn2 = [];
-
-
+var m1Highest = 0; var m2highest=0;
+var m1PerInc = 0; var m2PerInc = 0;
+var netBalSign = "";var netBalSign2;
+var invalid = false;
 var options = {
   indexAxis: 'y',
   elements: {
@@ -88,7 +90,7 @@ var options = {
 
 
 function resetValues(){
-   month = "";month2 = "";
+  // month = "";
   map1.set('week1', 0);
   map1.set('week2', 0);
   map1.set('week3', 0);
@@ -106,11 +108,14 @@ function resetValues(){
    threeCol = false;
    debitField = false;
    moneyIn = [];
+   m1PerInc = 0;
+   m1Highest = 0;  invalid = false;
+
 }
 
 function resetValues2(){
   
-  month2 = "";
+ // month2 = "";
   map2.set('week1', 0);
   map2.set('week2', 0);
   map2.set('week3', 0);
@@ -127,6 +132,9 @@ function resetValues2(){
    percentagem12 = 0;
    threeCol2 = false;
    moneyIn2 = [];
+   m2PerInc = 0;
+   m2highest = 0;
+   invalid = false;
 }
 
 
@@ -151,6 +159,11 @@ async function testSubmit2(buffer) {
       console.log(
         `Field ${name} has value '${field.value}' with a confidence score of ${field.confidence}`
       );
+      if(name == "Bank Name"){
+        if(field.confidence<0.200){
+            invalid=true
+        }
+      }
     }
   }
   console.log("Pages:");
@@ -237,7 +250,7 @@ async function testSubmit2(buffer) {
       totalMoneyIn +=parseFloat(item);
     });
     monthlyIncome2 = totalMoneyIn;
-    var monthExpendature = (totalSpent/2)/30;
+    var monthExpendature = (totalSpent2/2)/30;
     var averageDailyMoneyIn = (totalMoneyIn)/30;
     netBalanceIncreaseDecrease2 =  totalMoneyIn-totalSpent2;
 
@@ -290,6 +303,16 @@ async function testSubmit2(buffer) {
 
   }
   hide();
+  showSubmit()
+
+  if(  monthExpendature >monthlyIncome2){
+    document.getElementById('netbalm2').innerText='+£' + netBalanceIncreaseDecrease2.toFixed(2);
+  }
+  else{
+    document.getElementById('netbalm2').innerText='-£'+  netBalanceIncreaseDecrease2.toFixed(2);
+  }
+
+
   document.getElementById('secondDS1').style.opacity =100;document.getElementById('secondDS2').style.opacity =100;document.getElementById('secondDS3').style.opacity =100;document.getElementById('secondDS4').style.opacity =100;document.getElementById('secondDS5').style.opacity =100;
   document.getElementById('secondDS6').style.opacity =100;
 
@@ -297,22 +320,33 @@ async function testSubmit2(buffer) {
   document.getElementById('m2expensive').innerText = '£'+largestTran2;
   document.getElementById('mostcm2').innerText = mostC2;
   document.getElementById('m2percent').innerText = 'Made up ' +percentagem12+'% of all transactions'
-  document.getElementById('netbalm2').innerText = netBalanceIncreaseDecrease2.toFixed(2);
 
   var arr = [week1No2,week2No2,week3No2,week4No2]
   arr.sort()
   var largest_element = arr[arr.length-1]
   var smallest_element = arr[0];
 
-  if(largest_element==week1No2){document.getElementById('highestw2').innerText='1 - 7'}
-  else if(largest_element==week2No2){document.getElementById('highestw2').innerText='7 - 14'}
-  else if(largest_element==week3No2){document.getElementById('highestw2').innerText='14 - 21'}
-  else if(largest_element==week4No2){document.getElementById('highestw2').innerText='21 - End of month'}
+  if(largest_element==week1No2){document.getElementById('highestw2').innerText='1 - 7';m2highest =1}
+  else if(largest_element==week2No2){document.getElementById('highestw2').innerText='7 - 14';m2highest =2}
+  else if(largest_element==week3No2){document.getElementById('highestw2').innerText='14 - 21';m2highest =2}
+  else if(largest_element==week4No2){document.getElementById('highestw2').innerText='21 - End of month';m2highest =3}
   if(smallest_element==week1No2){document.getElementById('lowestw2').innerText='1 - 7'}
   else if(smallest_element==week2No2){document.getElementById('lowestw2').innerText='7 - 14'}
   else if(smallest_element==week3No2){document.getElementById('lowestw2').innerText='14 - 21'}
   else if(smallest_element==week4No2){document.getElementById('lowestw2').innerText='21 - End of month'}
 
+  
+
+  m2PerInc = (largestTran2 - averageTranCost2)/averageTranCost2 * 100
+  document.getElementById('month2h1').innerText=month2;
+
+  console.log(largestTran2 +' '+ averageTranCost2 +' '+ m2PerInc.toFixed(2))
+  updatem2Summary();
+  document.getElementById('month2h1').innerText=month2;document.getElementById('month2h1p').innerText=month2;  document.getElementById('month2h1c').innerText=month2;document.getElementById('month2h1e').innerText=month2;document.getElementById('month2h1d').innerText=month2;document.getElementById('month2h1s').innerText=month2;
+
+  showMonth2Summary();
+  console.log(month + ' ' + month2)
+  activateSubmitAndDash()
 
 }
 
@@ -335,19 +369,29 @@ async function testSubmit(buffer) {
     for (const [name, field] of Object.entries(document.fields)) {
       console.log(
         `Field ${name} has value '${field.value}' with a confidence score of ${field.confidence}`
+
       );
+      if(name == "Bank Name"){
+        if(field.confidence<0.200){
+            invalid=true 
+            console.log('baloney')
+        }
+      }
     }
   }
   console.log("Pages:");
   for (const page of pages || []) {
     console.log(`Page number: ${page.pageNumber} (${page.width}x${page.height} ${page.unit})`);
+
   }
   console.log("Tables:");
   var totalMoneyIn = 0;
   var week1=0;var week2=0;var week3=0;var week4=0; 
   var commonExpendature = [];
   for (const table of tables || []) {
-    console.log(`- Table (${table.columnCount}x${table.rowCount})`);
+    console.log(`- Tableeeeeeeeee (${table.columnCount}x${table.rowCount})`);
+
+    
     for (const cell of table.cells) {
       console.log(`  - cell (${cell.rowIndex},${cell.columnIndex}) "${cell.content}"`); 
       if(cell.columnIndex == 1 && cell.content == "DEBIT" || cell.content == "DEBI"){
@@ -355,7 +399,6 @@ async function testSubmit(buffer) {
       }
       if(cell.columnIndex == 0 && cell.content!="Date"){       
         month = cell.content.split(" ").pop();     
-        month2 = cell.content.split(" ").pop();     
         if(parseInt(cell.content.substring(0,2))<=7){
           week1 += parseInt(cell.content.substring(0,2));
           week1No+=1;
@@ -432,10 +475,11 @@ async function testSubmit(buffer) {
     document.getElementById('totalMoneyIn').innerText='Total Money In over the month - £' +  monthlyIncome.toFixed(2);
     document.getElementById('averageMoneyIn').innerText='Average Money In over the month - £' +  averageDailyMoneyIn.toFixed(2);
     if(  monthExpendature >monthlyIncome){
-      document.getElementById('netSpend').innerText='Net spend over the month - £' +  netBalanceIncreaseDecrease.toFixed(2);
+      
+      document.getElementById('netbalm1').innerText='+£' + netBalanceIncreaseDecrease.toFixed(2);
     }
     else{
-      document.getElementById('netSpend').innerText='Net spend over the month - £' +  netBalanceIncreaseDecrease.toFixed(2);
+      document.getElementById('netbalm1').innerText='-£'+  netBalanceIncreaseDecrease.toFixed(2);
     }
     const uniqueSet = new Set(moneyIn);
     const filteredElements = moneyIn.filter(currentValue => {
@@ -483,23 +527,40 @@ async function testSubmit(buffer) {
     else if(month == "Nov"){month="November";}
     else if(month == "Dec"){month="December";}
 
-    if(month2 == "Jan"){month2="January";}
-    else if(month2 == "Feb"){month2="February";}
-    else if(month2 == "Mar"){month2="March";}
-    else if(month2 == "Apr"){month2="April";}
-    else if(month2 == "Jun"){month2="June";}
-    else if(month2 == "Jul"){month2="July";}
-    else if(month2 == "Aug"){month2="August";}
-    else if(month2 == "Sep"){month2="September";}
-    else if(month2 == "Oct"){month2="October";}
-    else if(month2 == "Nov"){month2="November";}
-    else if(month2 == "Dec"){month2="December";}
+  
 
     document.getElementById('weeklySpending').innerHTML = ' Month of '+ month + ' number of transactions per week \n</br>' + month + ' 1<sup>st</sup> - 7<sup>th</sup>:  \n' + map1.get('week1')+'</br>  ' + month + ' 7<sup>th</sup> - 14<sup>th</sup>:  \n' + map1.get('week2')+'</br>  ' + month + ' 14<sup>th</sup> - 21<sup>st</sup>:  \n' + map1.get('week3')+'</br>  ' + month + ' 21<sup>st</sup> - End Of Month:  \n' + map1.get('week4')+'</br>  ' 
   }
+
+   m1PerInc = (largestTran - averageTranCost)/averageTranCost * 100
   hide()
   showSubmit()
+  updatem1Summary()
+  showMonth1Summary()
+  activateSubmitAndDash()
 }
+
+function updatem1Summary(){
+  if(m1Highest==1){
+    document.getElementById('spendingPatternM1').innerText = 'You had a relatively inconsistent spending pattern with the highest number of transactions at the start of the month, by altering your spending habits and spending less at the start you could avoid having to budget later in the month.'
+  }else if(m1Highest==2 ){document.getElementById('spendingPatternM1').innerText = 'You had a relatively consistent spending pattern with the highest number of transactions around the middle of the month, although you did not have the most transactions at the start of the month you could still avoid having to budget later in the month by being more consistent.'}
+   else if(m1Highest==3){document.getElementById('spendingPatternM1').innerText = 'You had a relatively inconsistent spending pattern with the highest number of transactions at the end of the month. It may be the case that you spend the most around payday and could be worth considering saving that money instead'}
+   console.log("Yoooo"+m1Highest)
+   document.getElementById('commonspendSum1').innerText = 'Your most common purchase makes up '+percentagem1+'% of all transactions, it may be worth investigating whether this is an essential purchase or whether you could cut down on it '
+   document.getElementById('averageSpendSum1').innerText = 'Your most expensive transaction is ' + m1PerInc.toFixed(2)+ '% more expensive than your average transaction cost. If this is not an essential purchase it may be worth either reconsidering the purchase or paying in installments'  
+   document.getElementById('dailySpendSum1').innerText = 'Your average daily cost is £' + (totalSpent/30).toFixed(2)+ ', if you are looking to save money it may be worth investigating this further and seeing where exactly you are spending your money on a day by day basis. Small purchases can gradually add up over time.'
+}
+function updatem2Summary(){
+
+  if(m2highest==1){
+    document.getElementById('spendingPatternM2').innerText = 'You had a relatively inconsistent spending pattern with the highest number of transactions at the start of the month, by altering your spending habits and spending less at the start you could avoid having to budget later in the month.'
+  }else if(m2highest==2){document.getElementById('spendingPatternM2').innerText = 'You had a relatively consistent spending pattern with the highest number of transactions around the middle of the month, although you did not have the most transactions at the start of the month you could still avoid having to budget later in the month by being more consistent.'}
+   else if(m2highest==3){document.getElementById('spendingPatternM2').innerText = 'You had a relatively inconsistent spending pattern with the highest number of transactions at the end of the month. It may be the case that you spend the most around payday and could be worth considering saving that money instead'}
+   document.getElementById('commonspendSum2').innerText = 'Your most common purchase makes up '+percentagem12+'% of all transactions, it may be worth investigating whether this is an essential purchase or whether you could cut down on it '
+   document.getElementById('averageSpendSum2').innerText = 'Your most expensive transaction is ' + m2PerInc.toFixed(2)+ '% more expensive than your average transaction cost. If this is not an essential purchase it may be worth either reconsidering the purchase or paying in installments'  
+   document.getElementById('dailySpendSum2').innerText = 'Your average daily cost is £' + (totalSpent2/30).toFixed(2)+ ', if you are looking to save money it may be worth investigating this further and seeing where exactly you are spending your money on a day by day basis. Small purchases can gradually add up over time.'
+
+  }
 
 
 testSubmit().catch((err) => {
@@ -580,7 +641,7 @@ var dailySpend = {
   datasets:[
     {
       label:["Average Daily Spend (£)"],
-      data:[6,7],
+      data:[50.53,34.60],
       borderWidth:2,
     }
 ],
@@ -595,9 +656,24 @@ function show() {
   let text = document.getElementById("loaderText")
 
   pic.style.opacity = 100;
+  pic.style.display = 'inherit';
   text.style.opacity = 100;
 
 //window.setTimeout("document.getElementById('loader').style.opacity=0;", 3000);
+}
+function hideSubmitAndDash(){
+  let submit = document.getElementById("submitBtn");
+  submit.style.display = 'none';
+  let dash = document.getElementById("dash");
+  dash.style.display = 'none';
+}
+function activateSubmitAndDash(){
+  let submit = document.getElementById("submitBtn");
+  submit.style.display = 'inherit';
+  let processing =  document.getElementById("loader");
+  processing.style.display = 'none';
+  let dash = document.getElementById("dash");
+  dash.style.display = 'inherit';
 }
 function showSubmit(){
   let submit = document.getElementById("submitBtn");
@@ -608,8 +684,14 @@ function showDashboardBtn(){
 
   let dash = document.getElementById("dash");
   dash.style.opacity = 100;
-
-
+}
+function showMonth1Summary(){
+  let box = document.getElementById('month1SummaryBox');
+  box.style.display = 'inherit';
+}
+function showMonth2Summary(){
+  let box = document.getElementById('month2SummaryBox');
+  box.style.display = 'inherit';
 }
 function hide(){
   let pic = document.getElementById("loader");
@@ -651,6 +733,22 @@ const Analytics = () => {
     setOpenUp(false);
   };
 
+
+  const [openIt, setOpenIt] = React.useState(false);
+
+  const handleClickIt = () => {
+    setOpenIt(true);
+  };
+
+  const handleCloseIt = (event, reason) => {
+
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenIt(false);
+  };
+
   
 
 const data2 = {
@@ -664,7 +762,7 @@ const data2 = {
       borderWidth:2,
     },
     {
-      label:"July",
+      label:"June",
       data:[5,19,3,5],
       backgroundColor:'#CB904D ',
       borderColor:'#CB904D',
@@ -700,6 +798,15 @@ var netSpendMonthUpdate = {
     {
       label:month,
       data:[totalSpent,monthlyIncome],  
+    }
+]
+};
+var netSpendMonth2Update = {
+  labels: ["Money In (£)","Money Out (£)"],
+  datasets:[
+    {
+      label:month2,
+      data:[totalSpent2,monthlyIncome2],  
     }
 ]
 };
@@ -758,6 +865,8 @@ const options2 = {
 
 const [datav, setData] = useState(data2); // REMOVED BRACKETS
 const [m, setDataPie] = useState(netSpendMonth1); // REMOVED BRACKETS
+const [pie2, setDataPie2] = useState(netSpendMonth1); // REMOVED BRACKETS
+
 const [commonm1, setDatacm1] = useState(mostCommon1); // REMOVED BRACKETS
 const [ex1, setDataExp] = useState(expensive); // REMOVED BRACKETS
 const [ds, setDatads] = useState(dailySpend); // REMOVED BRACKETS
@@ -773,24 +882,37 @@ const updatePlot = () => {
   setDatacm1(mostCommonUpdated);
   setDataExp(expensiveUpdated);
   setDatads(dailySpendUpdated);
+  setDataPie2(netSpendMonth2Update)
 
 
   console.log(month2 +" "+ map2+" "+totalSpent2 +" "+monthlyIncome2 +" "+week1No2 +" "+netBalanceIncreaseDecrease2 +" "+fruits2 +" "+numberOfCommonTrans2 +" "+mostC2+" "+largestTran2+" "+averageTranCost2+" "+percentagem12+" "+threeCol2+" "+moneyIn2)
   console.log(month +" "+ map1+" "+totalSpent +" "+monthlyIncome +" "+week1No +" "+netBalanceIncreaseDecrease +" "+fruits +" "+numberOfCommonTrans +" "+mostC+" "+largestTran+" "+averageTranCost+" "+percentagem1+" "+threeCol+" "+moneyIn)
 
   updateText()
+  updatem1Summary()
   console.log(monthlyIncome+" "+ totalSpent)
-  setOptions(options2); // This is redundant for the purpose
+  setOptions(options2); 
+  document.getElementById('formFileLg2').disabled = false;
 };
 
 function submitClick(){
   updatePlot();
-  showDashboardBtn();
+  if(invalid == true){
+    handleClickIt()
+  }
+  else{
+      showDashboardBtn();
+
+  }
 }
 function dashClick(){
+  hideSubmitAndDash();
   updatePlot();
   let form1= document.getElementById('form1')
   form1.style.display = 'inherit'
+  document.getElementById('month2h1').innerText=month2;document.getElementById('month2h1p').innerText=month2;  document.getElementById('month2h1c').innerText=month2;document.getElementById('month2h1e').innerText=month2;document.getElementById('month2h1d').innerText=month2;document.getElementById('month2h1s').innerText=month2;document.getElementById('m1h1doh').innerText=month;
+  document.getElementById('month1h1').innerText=month;document.getElementById('month1h1p').innerText=month;  document.getElementById('month1h1c').innerText=month;document.getElementById('month1h1e').innerText=month;document.getElementById('month1h1d').innerText=month;document.getElementById('month1h1s').innerText=month;document.getElementById('m2h1doh').innerText=month2;
+  console.log(month +" "+ month2)
 }
 
 function updateText(){
@@ -800,27 +922,28 @@ function updateText(){
   var largest_element = arr[arr.length-1]
   var smallest_element = arr[0];
 
-  if(largest_element==week1No){document.getElementById('highestw1').innerText='1 - 7'}
-  else if(largest_element==week2No){document.getElementById('highestw1').innerText='7 - 14'}
-  else if(largest_element==week3No){document.getElementById('highestw1').innerText='14 - 21'}
-  else if(largest_element==week4No){document.getElementById('highestw1').innerText='21 - End of month'}
+  if(largest_element==week1No){document.getElementById('highestw1').innerText='1 - 7'; m1Highest=1}
+  else if(largest_element==week2No){document.getElementById('highestw1').innerText='7 - 14';m1Highest=2}
+  else if(largest_element==week3No){document.getElementById('highestw1').innerText='14 - 21';m1Highest=2}
+  else if(largest_element==week4No){document.getElementById('highestw1').innerText='21 - End of month';m1Highest=3}
   if(smallest_element==week1No){document.getElementById('lowestw1').innerText='1 - 7'}
   else if(smallest_element==week2No){document.getElementById('lowestw1').innerText='7 - 14'}
   else if(smallest_element==week3No){document.getElementById('lowestw1').innerText='14 - 21'}
   else if(smallest_element==week4No){document.getElementById('lowestw1').innerText='21 - End of month'}
-  document.getElementById('month1h1').innerText=month;
+  document.getElementById('month1h1').innerText=month;document.getElementById('month1h1p').innerText=month;  document.getElementById('month1h1c').innerText=month;document.getElementById('month1h1e').innerText=month;document.getElementById('month1h1d').innerText=month;document.getElementById('month1h1s').innerText=month;
 
 
-  document.getElementById('netbalm1').innerText = netBalanceIncreaseDecrease.toFixed(2);
+  // /month1h1e
+
+
   document.getElementById('mostcm1').innerText = mostC;
   document.getElementById('m1percent').innerText = 'Made up ' +percentagem1+'% of all transactions'
 
   document.getElementById('m1expensive').innerText = '£'+largestTran
   //m1expensive
-  document.getElementById('month1Title').innerText = month;  document.getElementById('month2Title').innerText = month2;
+  // document.getElementById('month1Title').innerText = month;  document.getElementById('month2Title').innerText = month2;
   document.getElementById('m1daily').innerText = '£'+(totalSpent/30).toFixed(2); document.getElementById('m2daily').innerText = '£'+(totalSpent2/30).toFixed(2);
 
-  document.getElementById('month2Title').innerHTML= '<strong>'+ month2 +'</strong>';
 
 
 }
@@ -833,10 +956,16 @@ const readFile = e => {
       console.log(arrayBuffer);
       resetValues();
       testSubmit(arrayBuffer)
+     
+     
+    
+        handleClick();
+         
+     
 
   }
   reader.readAsArrayBuffer(file);
-  handleClick();
+
 
 }
 const readFileB = e => {
@@ -848,10 +977,12 @@ const readFileB = e => {
       console.log(arrayBuffer);
       resetValues2();
       testSubmit2(arrayBuffer)
-
+     
+        handleClick();
+     
   }
   reader.readAsArrayBuffer(file);
-  handleClick();
+
 }
 
   return (
@@ -861,6 +992,12 @@ const readFileB = e => {
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
           File Uploaded Successfully!
+        </Alert>
+      </Snackbar>
+
+      <Snackbar open={openIt} autoHideDuration={6000} onClose={handleCloseIt}>
+        <Alert onClose={handleCloseIt} severity="error" sx={{ width: '100%' }}>
+           Not enough information could be found from file
         </Alert>
       </Snackbar>
  
@@ -898,10 +1035,11 @@ const readFileB = e => {
             >
             <input
               class="relative m-0 block font-normal w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding py-[0.32rem] px-3 leading-[2.15] text-white transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[margin-inline-end:0.75rem] file:[border-inline-end-width:1px] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-[0_0_0_1px] focus:shadow-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100"
-              id="formFileLg"
+              id="formFileLg2"
               type="file"
               accept=".jpg, .jpeg, .png, .doc, .docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document, .pdf"
-              onChange={readFileB} />
+              onChange={readFileB} 
+              disabled/>
           </div>
     </div>
 
@@ -929,7 +1067,7 @@ const readFileB = e => {
             <div class="flex flex-row flex-wrap py-2">
                
                 <main role="main" class="w-full sm:w-2/3 md:w-6/12 pt-1 px-2 ">
-                <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Transactions Over June Compared to July</h1>
+                <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Transactions Over The Month</h1>
 
                     <Line data={datav} options={options} onUpdate={updatePlot}/>
                 </main>
@@ -942,12 +1080,12 @@ const readFileB = e => {
                 <span>These bar charts show how your transactions frequency differs from month to month. From this you can work out whether you are spending too much and having to budget later in the month or have a relatively even spending habit.<br/><br/> <strong>Summary:</strong><br/></span>
 
 
-                <span id='month1Title'><strong id='month1h1'><br/>July </strong>  </span>
+                <span><strong id='month1h1'><br/>July </strong>  </span>
                 <span id='month1Summary'><br/>Highest Transactions : <strong id='highestw1'>1-7</strong><br/></span>
                 <span id='month1Summary'>Lowest Transactions : <strong id='lowestw1'> 7-14</strong><br/></span>
                 <div id='secondDS1' style={{ opacity: 0}}>
 
-                <span id='month2Title'><strong><br/>July </strong>  </span>
+                <span><strong id='month2h1'><br/>July </strong>  </span>
                 <span id='month1Summary'><br/>Highest Transactions : <strong id='highestw2'>1-7</strong><br/></span>
                 <span id='month1Summary'>Lowest Transactions : <strong id='lowestw2'> 7-14</strong></span>
                 </div>
@@ -961,13 +1099,16 @@ const readFileB = e => {
 
                
                <main role="main" class="w-full sm:w-2/3 md:w-3/12 pt-20 px-2 ">
+               <div className='flex justify-center'><strong id='m1h1doh'>July</strong></div> 
+
                    <Doughnut data={m}/>
                </main>
 
                <main role="main" class="w-full sm:w-2/3 md:w-3/12 pt-20 px-2 ">
                   <div id='secondDS6' style={{ opacity: 0}}>
+                  <div className='flex justify-center'><strong id='m2h1doh'>July</strong></div> 
 
-                   <Doughnut data={netSpendMonth2}/>
+                   <Doughnut data={pie2}/>
                                   </div>
 
                </main>
@@ -978,12 +1119,12 @@ const readFileB = e => {
                <span>These pie charts give you a clear picture of how your balance has increased / decreased over the course of the year and how this compares between months<br/><br/> <strong>Summary:</strong><br/></span>
 
 
-               <span id='month1Title'><strong id='month1h1'><br/>July </strong>  </span>
+               <span><strong id='month1h1p'><br/>July </strong>  </span>
                <span id='month1Summary'><br/>Net Balance : <strong id='netbalm1'> +500</strong><br/></span>
 
                <div id='secondDS2' style={{ opacity: 0}}>
 
-               <span id='month2Title'><strong><br/>July </strong>  </span>
+               <span><strong id='month2h1p'><br/>July </strong>  </span>
                <span id='month2Summary'><br/>Net Balance : <strong id='netbalm2'>-700</strong><br/></span>
                </div>
                </div>
@@ -1003,15 +1144,15 @@ const readFileB = e => {
                <div class="top-0 p-4 w-full">
                <p className='text-[#00df90] font-bold  text-l pt-10'>Comparing Most Common Transaction</p>
 
-               <span>These pie charts give you a clear picture of how your balance has increased / decreased over the course of the year and how this compares between months<br/><br/> <strong>Summary:</strong><br/></span>
+               <span>This chart shows you your most common transaction and what percentage of all transactions this makes up. This transaction is not necessarily the most expensive but it is still a useful tool to get a better idea of your spending habits. <br/><br/> <strong>Summary:</strong><br/></span>
 
 
-               <span id='month1Title'><strong id='month1h1'><br/>July </strong>  </span>
+               <span ><strong id='month1h1c'><br/>July </strong>  </span>
                <span id='month1Summary'><br/>Most Common Transaction : <br/><strong id='mostcm1'> Transfer to 109092</strong><br/><div id='m1percent'> Made up 7% of all transactions</div></span>
 
                <div id='secondDS3' style={{ opacity: 0}}>
 
-               <span id='month2Title'><strong><br/>June </strong>  </span>
+               <span><strong id='month2h1c'><br/>June </strong>  </span>
                <span id='month1Summary'><br/>Most Common Transaction : <br/> <strong id='mostcm2'>CARD PAYMENT TO Jupiter</strong><br/><div id='m2percent'> Made up 7% of all transactions</div></span>
                </div>
                </div>
@@ -1032,14 +1173,14 @@ const readFileB = e => {
                <div class="top-0 p-4 w-full">
                <p className='text-[#00df90] font-bold  text-l pt-10'>Comparing Most Expensive Transaction</p>
 
-               <span>These pie charts give you a clear picture of how your balance has increased / decreased over the course of the year and how this compares between months<br/><br/> <strong>Summary:</strong><br/></span>
+               <span>This chart shows your most expensive transaction and how this compares to your average transaction amount. This could be useful to highlight any overspending and get an idea of how consistent the amount your expenses are.<br/><br/> <strong>Summary:</strong><br/></span>
 
 
-               <span id='month2Title'><br/>July  </span>
+               <span><strong id='month1h1e'><br/>July</strong>  </span>
                <span><br/>Most Expensive Transaction : <strong id='m1expensive'> £500</strong></span>
                <div id='secondDS4' style={{ opacity: 0}}>
 
-               <span id='month1Title'><strong><br/>June </strong>  </span>
+               <span><strong id='month2h1e'><br/>June </strong>  </span>
                <span id='month1Summary'><br/>Most Expensive Transaction : <strong id='m2expensive'>£750</strong></span>
                </div>
 
@@ -1054,25 +1195,57 @@ const readFileB = e => {
                <main role="main" class="w-full sm:w-2/3 md:w-6/12 pt-20 px-2 ">
                <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Comparing Average Daily Spend</h1>
 
-                   <Bar data={dailySpend}/>
+                   <Bar data={ds}/>
                </main>
           <aside class="w-full sm:w-1/3 md:w-2/4 px-2">
                <div class="top-0 p-4 w-full">
                <p className='text-[#00df90] font-bold  text-l pt-10'>Comparing Average Daily Spend</p>
 
-               <span>These pie charts give you a clear picture of how your balance has increased / decreased over the course of the year and how this compares between months<br/><br/> <strong>Summary:</strong><br/></span>
+               <span>This chart shows you your average daily spend. This could be useful as it may be higher than expected and you may wish to investigate further where most of you daily expense is coming from.<br/><br/> <strong>Summary:</strong><br/></span>
 
 
-               <span id='month1Title'><strong id='month1h1'><br/>July </strong>  </span>
+               <span><strong id='month1h1d'><br/>July </strong>  </span>
                <span><br/>Average daily spend: <strong id='m1daily'> £500</strong></span>
                <br/>
               <div id='secondDS5' style={{ opacity: 0}}>
-                  <span id='month2Title'><br/>July  </span>
+                  <span><strong id='month2h1d'><br/>July </strong> </span>
                   <span><br/>Average daily spend: <strong id='m2daily'> £500</strong></span>
               </div>
 
                </div>
                 </aside>
+           </div>
+           <div className='w-full bg-black h-0.5'></div>
+           <div className='flex justify-around py-5 '>
+
+           <div id='month1SummaryBox' style={{ display: "none"}}>
+
+            <div className='w-full bg-[#9ad0f5]  pl-5 pr-5 rounded'><h1 className='py-5'><strong id='month1h1s'>July</strong><strong> Statement Summary</strong> </h1>
+                <p className='py-5'> <strong className='italic'>Spending Pattern Over Time<br></br></strong><div id='spendingPatternM1'>You had a relatively inconsistent spending pattern with the highest number of transactions at the start of the month, by altering your spending habits and spending less at the start you could avoid having to budget later in the month.</div></p>
+              
+                <p className='py-5'> <strong className='italic'>Most Common Purchase <br></br></strong> <div id='commonspendSum1'>Your most common purchase makes up 7% of all transactions, it may be worth investigating whether this is an essential purchase or whether you could cut down on it </div> </p>
+
+                <p className='py-5'> <strong className='italic'>Transaction Amounts <br></br></strong><div id='averageSpendSum1'>Your most expensive transaction is 110% more expensive than your average transaction cost. If this is not an essential purchase it may be worth either reconsidering the purchase or paying in installments</div>  </p>
+
+                <p className='py-5'> <strong className='italic'>Daily Expendature <br></br></strong><div id='dailySpendSum1'>Your average daily cost is £50.53, if you are looking to save money it may be worth investigating this further and seeing where exactly you are spending your money on a day by day basis. Small purchases can gradually add up over time.</div> </p>
+             </div>
+            </div>
+            <div>&nbsp;</div>
+            <div id='month2SummaryBox'style={{ display: "none"}}>
+
+            <div className='w-full bg-[#ffb1c1] pl-5 pr-5 rounded'><h1 className='py-5'><strong id='month2h1s'>June</strong><strong> Statement Summary</strong></h1>
+                <p className='py-5'> <strong className='italic'>Spending Pattern Over Time<br></br></strong><div id='spendingPatternM2'>You had a relatively inconsistent spending pattern with the highest number of transactions at the start of the month, by altering your spending habits and spending less at the start you could avoid having to budget later in the month.</div></p>
+              
+                <p className='py-5'> <strong className='italic'>Most Common Purchase <br></br></strong>  <div id='commonspendSum2'>Your most common purchase makes up 9% of all transactions, it may be worth investigating whether this is an essential purchase or whether you could cut down on it </div> </p>
+
+              <p className='py-5'> <strong className='italic'>Transaction Amounts <br></br></strong><div id='averageSpendSum2'>Your most expensive transaction is 50% more expensive than your average transaction cost. If this is not an essential purchase it may be worth either reconsidering the purchase or paying in installments</div>   </p>
+
+              <p className='py-5'> <strong className='italic'>Daily Expendature <br></br></strong><div id='dailySpendSum2'>Your average daily cost is £34.60, if you are looking to save money it may be worth investigating this further and seeing where exactly you are spending your money on a day by day basis. Small purchases can gradually add up over time.</div> </p>
+
+          </div>
+            </div>
+
+
            </div>
            </div>
 
@@ -1122,8 +1295,8 @@ const readFileB = e => {
                 <span><br/>Highest Transactions : <strong>1-7</strong><br/></span>
                 <span>Lowest Transactions : <strong> 7-14</strong><br/></span>
 
-                <span><strong><br/>July </strong>  </span>
-                <span><br/>Highest Transactions : <strong>1-7</strong><br/></span>
+                <span><strong><br/>June </strong>  </span>
+                <span><br/>Highest Transactions : <strong>14-21</strong><br/></span>
                 <span>Lowest Transactions : <strong> 7-14</strong></span>
 
                 </div>
@@ -1136,9 +1309,12 @@ const readFileB = e => {
 
                
                <main role="main" class="w-full sm:w-2/3 md:w-3/12 pt-20 px-2 ">
+               <div className='flex justify-center'><strong>July</strong></div> 
                    <Doughnut data={m}/>
                </main>
                <main role="main" class="w-full sm:w-2/3 md:w-3/12 pt-20 px-2 ">
+               <div className='flex justify-center'><strong>June</strong></div> 
+
                    <Doughnut data={netSpendMonth2}/>
                </main>
           <aside class="w-full sm:w-1/3 md:w-1/4 px-2">
@@ -1149,10 +1325,10 @@ const readFileB = e => {
 
 
                <span><strong><br/>July </strong>  </span>
-               <span><br/>Net Balance : <strong> +500</strong><br/></span>
+               <span><br/>Net Balance : <strong> +£500</strong><br/></span>
 
-               <span><strong><br/>July </strong>  </span>
-               <span><br/>Net Balance : <strong>-700</strong><br/></span>
+               <span><strong><br/>June </strong>  </span>
+               <span><br/>Net Balance : <strong>-£700</strong><br/></span>
 
                </div>
                 </aside>
@@ -1171,7 +1347,7 @@ const readFileB = e => {
                <div class="top-0 p-4 w-full">
                <p className='text-[#00df90] font-bold  text-l pt-10'>Comparing Most Common Transaction</p>
 
-               <span>These pie charts give you a clear picture of how your balance has increased / decreased over the course of the year and how this compares between months<br/><br/> <strong>Summary:</strong><br/></span>
+               <span>This chart shows you your most common transaction and what percentage of all transactions this makes up. This transaction is not necessarily the most expensive but it is still a useful tool to get a better idea of your spending habits.<br/><br/> <strong>Summary:</strong><br/></span>
 
 
                <span><strong><br/>July </strong>  </span>
@@ -1199,7 +1375,7 @@ const readFileB = e => {
                <div class="top-0 p-4 w-full">
                <p className='text-[#00df90] font-bold  text-l pt-10'>Comparing Most Expensive Transaction</p>
 
-               <span>These pie charts give you a clear picture of how your balance has increased / decreased over the course of the year and how this compares between months<br/><br/> <strong>Summary:</strong><br/></span>
+               <span>This chart shows your most expensive transaction and how this compares to your average transaction amount. This could be useful to highlight any overspending and get an idea of how consistent the amount your expenses are.<br/><br/> <strong>Summary:</strong><br/></span>
 
 
                <span><strong><br/>July </strong>  </span>
@@ -1226,20 +1402,48 @@ const readFileB = e => {
                <div class="top-0 p-4 w-full">
                <p className='text-[#00df90] font-bold  text-l pt-10'>Comparing Transaction Amounts</p>
 
-               <span>These pie charts give you a clear picture of how your balance has increased / decreased over the course of the year and how this compares between months<br/><br/> <strong>Summary:</strong><br/></span>
+               <span>This chart shows you your average daily spend. This could be useful as it may be higher than expected and you may wish to investigate further where most of you daily expense is coming from.<br/><br/> <strong>Summary:</strong><br/></span>
 
 
                <span><strong><br/>July </strong>  </span>
-               <span><br/>Most Expensive Transaction : <strong> £500</strong></span>
+               <span><br/>Average Daily Expendature : <strong> £50.53</strong></span>
 
                <span><strong><br/>June </strong>  </span>
-               <span><br/>Most Expensive Transaction : <strong>£750</strong></span>
+               <span><br/>Average Daily Expendature: <strong>£34.60</strong></span>
 
                <span><strong id=''></strong></span>
 
                 
                </div>
                 </aside>
+           </div>
+           <div className='w-full bg-black h-0.5'></div>
+           <div className='flex justify-around py-5 '>
+
+            <div className='w-full bg-[#9ad0f5]  pl-5 pr-5 rounded'><h1 className='py-5'><strong>July Statement Summary</strong></h1>
+            <p className='py-5'> <strong className='italic'>Spending Pattern Over Time<br></br></strong>You had a relatively inconsistent spending pattern with the highest number of transactions at the start of the month, by altering your spending habits and spending less at the start you could avoid having to budget later in the month.</p>
+          
+            <p className='py-5'> <strong className='italic'>Most Common Purchase <br></br></strong> Your most common purchase makes up 7% of all transactions, it may be worth investigating whether this is an essential purchase or whether you could cut down on it  </p>
+
+            <p className='py-5'> <strong className='italic'>Transaction Amounts <br></br></strong>Your most expensive transaction is 110% more expensive than your average transaction cost. If this is not an essential purchase it may be worth either reconsidering the purchase or paying in installments  </p>
+
+            <p className='py-5'> <strong className='italic'>Daily Expendature <br></br></strong>Your average daily cost is £50.53, if you are looking to save money it may be worth investigating this further and seeing where exactly you are spending your money on a day by day basis. Small purchases can gradually add up over time. </p>
+
+            </div>
+            <div>&nbsp;</div>
+            <div className='w-full bg-[#ffb1c1] pl-5 pr-5 rounded'><h1 className='py-5'><strong >June Statement Summary</strong></h1>
+            <p className='py-5'> <strong className='italic'>Spending Pattern Over Time<br></br></strong>You had a relatively inconsistent spending pattern with the highest number of transactions at the start of the month, by altering your spending habits and spending less at the start you could avoid having to budget later in the month.</p>
+          
+            <p className='py-5'> <strong className='italic'>Most Common Purchase <br></br></strong> Your most common purchase makes up 9% of all transactions, it may be worth investigating whether this is an essential purchase or whether you could cut down on it  </p>
+
+          <p className='py-5'> <strong className='italic'>Transaction Amounts <br></br></strong>Your most expensive transaction is 50% more expensive than your average transaction cost. If this is not an essential purchase it may be worth either reconsidering the purchase or paying in installments  </p>
+
+          <p className='py-5'> <strong className='italic'>Daily Expendature <br></br></strong>Your average daily cost is £34.60, if you are looking to save money it may be worth investigating this further and seeing where exactly you are spending your money on a day by day basis. Small purchases can gradually add up over time. </p>
+
+
+            </div>
+
+
            </div>
            </div>
       </Dialog>
@@ -1250,7 +1454,7 @@ const readFileB = e => {
         {/* </div> */}
    
     
-          <div className='text-white'>Stats<br/>
+          <div className='text-white' style={{display:'none'}}>Stats<br/>
       <span id='numberOfPages'> </span>
       <span id='totalColumnsScanned'></span>
       <span id='totalRowsScanned'> </span>
