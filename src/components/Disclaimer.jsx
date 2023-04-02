@@ -13,7 +13,7 @@ const Disclaimer = () => {
     return (
         <div>
           
-          <div class="flex flex-row flex-wrap py-2 pt-9 bg-orange-700">
+          <div class="flex flex-row flex-wrap py-2 pt-9 bg-orange-700" id='dis'>
 
                
               
