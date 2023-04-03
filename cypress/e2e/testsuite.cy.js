@@ -5,7 +5,6 @@ describe('e2e Tests', () => {
   it('T01 Should Successfully Upload Single PDF', () => {
     cy.visit('https://olliebooth2001.github.io/fe5/')
 
-    cy.get('.max-w-\[1240px\] > .flex-col > div > :nth-child(2)')
 
     cy.get('button[id$="scrollToUploadBtn"]').click();
 
