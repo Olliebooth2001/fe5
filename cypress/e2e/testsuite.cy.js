@@ -15,7 +15,7 @@ describe('e2e Tests', () => {
 
   })
   it('T02 Should Unsuccessfully upload invalid file', () => {
-    cy.visit('http://localhost:3000/')
+    cy.visit('https://olliebooth2001.github.io/fe5/')
 
     cy.get('#scrollToUploadBtn').click();
     cy.wait(2000)
