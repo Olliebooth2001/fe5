@@ -465,7 +465,6 @@ async function testSubmit(buffer) {
     moneyIn.forEach(item =>{
       totalMoneyIn +=parseFloat(item);
     });
-    console.log('brooooo this the spenttt '+totalSpent);
     monthlyIncome = totalMoneyIn;
     var monthExpendature = (totalSpent/2)/30;
     var averageDailyMoneyIn = (totalMoneyIn)/30;
