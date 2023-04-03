@@ -63,7 +63,7 @@ var largestTran = 0;var largestTran2 = 0;
 var averageTranCost = 0;var averageTranCost2 = 0;
 var percentagem1 = 0;var percentagem12 = 0;
 var threeCol = false;var threeCol2 = false;
-var debitField = false;
+var debitField1 = false; var debitField2 = false; 
 var moneyIn = [];var moneyIn2 = [];
 var m1Highest = 0; var m2highest=0;
 var m1PerInc = 0; var m2PerInc = 0;
@@ -106,7 +106,7 @@ function resetValues(){
    averageTranCost = 0;
    percentagem1 = 0;
    threeCol = false;
-   debitField = false;
+   debitField1 = false;
    moneyIn = [];
    m1PerInc = 0;
    m1Highest = 0;  invalid = false;
@@ -134,6 +134,7 @@ function resetValues2(){
 
    threeCol2 = false;
    moneyIn2 = [];
+   debitField2 = false;
    m2PerInc = 0;
    m2highest = 0;
    invalid = false;
@@ -181,7 +182,7 @@ async function testSubmit2(buffer) {
     for (const cell of table.cells) {
       console.log(`  - cell (${cell.rowIndex},${cell.columnIndex}) "${cell.content}"`); 
       if(cell.columnIndex == 1 && cell.content == "DEBIT" || cell.content == "DEBI"){
-          debitField = true;
+          debitField2 = true;
       }
       if(cell.columnIndex == 0 && cell.content!="Date"){       
         month2 = cell.content.split(" ").pop();     
@@ -220,11 +221,11 @@ async function testSubmit2(buffer) {
           commonExpendature.push(cell.content)
         }
        }
-       if(cell.columnIndex == 4 && cell.content != "" && cell.content != "Money in" && debitField ==true){
+       if(cell.columnIndex == 4 && cell.content != "" && cell.content != "Money in" && debitField2 ==true){
         moneyIn2.push(cell.content)
         console.log(moneyIn)
      }
-     if(cell.columnIndex == 5 && cell.content != "" && cell.content != "Money out" && debitField ==true){
+     if(cell.columnIndex == 5 && cell.content != "" && cell.content != "Money out" && debitField2 ==true){
       fruits2.push(parseFloat(cell.content))
       console.log(fruits2)
     }
@@ -397,7 +398,7 @@ async function testSubmit(buffer) {
     for (const cell of table.cells) {
       console.log(`  - cell (${cell.rowIndex},${cell.columnIndex}) "${cell.content}"`); 
       if(cell.columnIndex == 1 && cell.content == "DEBIT" || cell.content == "DEBI"){
-          debitField = true;
+          debitField1= true;
       }
       if(cell.columnIndex == 0 && cell.content!="Date"){       
         month = cell.content.split(" ").pop();     
@@ -436,11 +437,11 @@ async function testSubmit(buffer) {
           commonExpendature.push(cell.content)
         }
        }
-       if(cell.columnIndex == 4 && cell.content != "" && cell.content != "Money in" && debitField ==true){
+       if(cell.columnIndex == 4 && cell.content != "" && cell.content != "Money in" && debitField1 ==true){
         moneyIn.push(cell.content)
         console.log(moneyIn)
      }
-     if(cell.columnIndex == 5 && cell.content != "" && cell.content != "Money out" && debitField ==true){
+     if(cell.columnIndex == 5 && cell.content != "" && cell.content != "Money out" && debitField1 ==true){
       fruits.push(parseFloat(cell.content))
       console.log(fruits)
     }
