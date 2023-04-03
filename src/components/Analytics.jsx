@@ -284,9 +284,9 @@ async function testSubmit2(buffer) {
     }
     mostC2 = item;
     numberOfCommonTrans2 = mf;
-    percentagem12 = ((numberOfCommonTrans/commonExpendature.length)*100).toFixed(2)
+    percentagem12 = ((numberOfCommonTrans2/commonExpendature.length)*100).toFixed(2)
     document.getElementById('commonSpend').innerText=`Most common transaction: ${item} ( ${mf} times )  `;
-    document.getElementById('percentOfTotalTransactions').innerHTML = ((numberOfCommonTrans/commonExpendature.length)*100).toFixed(2) +'% of total transactions'
+    document.getElementById('percentOfTotalTransactions').innerHTML = ((numberOfCommonTrans2/commonExpendature.length)*100).toFixed(2) +'% of total transactions'
 
     if(month2 == "Jan"){month2="January";}
     else if(month2 == "Feb"){month2="February";}
