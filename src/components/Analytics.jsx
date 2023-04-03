@@ -130,6 +130,8 @@ function resetValues2(){
    largestTran2 = 0;
    averageTranCost2 = 0;
    percentagem12 = 0;
+   debitField = false;
+
    threeCol2 = false;
    moneyIn2 = [];
    m2PerInc = 0;
