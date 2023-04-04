@@ -39,7 +39,6 @@ function getNotUnique(array) {
 }
 
 const endpoint = "https://ollie-testfrom.cognitiveservices.azure.com/";
-  
   const modelId = "d03e2758-8b7a-4d62-a953-eec10b1bd7ec";
   const path = "../media/document-4.pdf";
   //const readStream = fs.createReadStream('../media/chart.png');
@@ -146,8 +145,6 @@ function startsWithCapital(word){
 }
 
 async function testSubmit2(buffer) {
-
-  console.log(process.env.REACT_APP_SECRET_KEY);
   const poller = await client.beginAnalyzeDocument(modelId, buffer, {
     onProgress: ({ status }) => {
       console.log(`status: ${status}`);

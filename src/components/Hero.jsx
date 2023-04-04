@@ -9,6 +9,7 @@ import {Link} from 'react-scroll'
 
 
 const Hero = () => {
+
   return (
     
     <div className='text-white bg-gradient-to-t from-gray-700 via-black to-black' id='hero'>
@@ -19,7 +20,6 @@ const Hero = () => {
             <img src={moneyLogo} className='mx-auto'></img>
             <p className ='md:text-5xl sm:text-4xl text-xl font-bold py-4'> Track Spending and Cut Costs</p>
         </div>
-
         <p className='md:text-2xl text-xl font-bold text-gray-500 p-top p-4' >Upload your bank statement now to visualise your spending   </p>
         
         {/* <a className='bg-[#00df9a] w-[300px] rounded-md font-bold my-6 mx-auto py-6 text-black flex flex-row justify-center  hover:bg-gray-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300'><Link activeClass="active" to="heading1" spy={true} smooth={true}>UPLOAD NOW </Link><AiOutlineArrowDown size={20}/></a>  */}
