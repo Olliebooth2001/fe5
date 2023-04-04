@@ -39,12 +39,12 @@ function getNotUnique(array) {
 }
 
 const endpoint = "https://ollie-testfrom.cognitiveservices.azure.com/";
-  const ai = "717032a4a8ea4d928a7401618329be07";
+  
   const modelId = "d03e2758-8b7a-4d62-a953-eec10b1bd7ec";
   const path = "../media/document-4.pdf";
   //const readStream = fs.createReadStream('../media/chart.png');
  var readStream = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII";
-  const client = new DocumentAnalysisClient(endpoint, new AzureKeyCredential(ai));
+  const client = new DocumentAnalysisClient(endpoint, new AzureKeyCredential(process.env.REACT_APP_SECRET_KEY));
 
 var month = ""; var month2="";
 const map1 = new Map();const map2 = new Map();
@@ -146,6 +146,8 @@ function startsWithCapital(word){
 }
 
 async function testSubmit2(buffer) {
+
+  console.log(process.env.REACT_APP_SECRET_KEY);
   const poller = await client.beginAnalyzeDocument(modelId, buffer, {
     onProgress: ({ status }) => {
       console.log(`status: ${status}`);
