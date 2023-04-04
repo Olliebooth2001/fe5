@@ -44,7 +44,6 @@ const endpoint = "https://ollie-testfrom.cognitiveservices.azure.com/";
   //const readStream = fs.createReadStream('../media/chart.png');
  var readStream = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII";
   const client = new DocumentAnalysisClient(endpoint, new AzureKeyCredential(process.env.REACT_APP_SECRET_KEY));
-
 var month = ""; var month2="";
 const map1 = new Map();const map2 = new Map();
 map1.set('week1', 0);map2.set('week1', 0);
