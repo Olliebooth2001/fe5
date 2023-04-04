@@ -39,12 +39,12 @@ function getNotUnique(array) {
 }
 
 const endpoint = "https://ollie-testfrom.cognitiveservices.azure.com/";
-  const apiKey = "717032a4a8ea4d928a7401618329be07";
+  const ai = "717032a4a8ea4d928a7401618329be07";
   const modelId = "d03e2758-8b7a-4d62-a953-eec10b1bd7ec";
   const path = "../media/document-4.pdf";
   //const readStream = fs.createReadStream('../media/chart.png');
  var readStream = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII";
-  const client = new DocumentAnalysisClient(endpoint, new AzureKeyCredential(apiKey));
+  const client = new DocumentAnalysisClient(endpoint, new AzureKeyCredential(ai));
 
 var month = ""; var month2="";
 const map1 = new Map();const map2 = new Map();
@@ -130,7 +130,7 @@ function resetValues2(){
    largestTran2 = 0;
    averageTranCost2 = 0;
    percentagem12 = 0;
-   debitField = false;
+   debitField2 = false;
 
    threeCol2 = false;
    moneyIn2 = [];
@@ -1005,7 +1005,7 @@ const readFileB = e => {
  
 
       <div className='font-bold text-[white] text-center text-3xl items-center py-10' id='heading1'><p>UPLOAD BANK STATEMENTS TO SEE<br/> YOUR SPENDING STATS</p></div>
-      <div class="flex justify-center py-10">
+      <div className="flex justify-center py-10">
 
       <Button variant="contained" onClick={handleClickOpen} id='exampleBtn'>
         <strong>View Example Dashboard </strong><AiOutlineDashboard size={25}/>
@@ -1013,15 +1013,15 @@ const readFileB = e => {
       </div>
 
 
-          <div class="flex justify-center">
-          <div class="p-10 mb-3 w-96">
+          <div className="flex justify-center">
+          <div className="p-10 mb-3 w-96">
             <label
-              for="formFileLg"
-              class="mb-2 inline-block text-white dark:text-neutral-200 font-bold"
+              htmlFor="formFileLg"  //for
+              className="mb-2 inline-block text-white dark:text-neutral-200 font-bold"
               >Select First Statement</label
             >
             <input
-              class="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding py-[0.32rem] px-3 font-normal leading-[2.15] text-white transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[margin-inline-end:0.75rem] file:[border-inline-end-width:1px] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-[0_0_0_1px] focus:shadow-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100"
+              className="relative m-0 block w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding py-[0.32rem] px-3 font-normal leading-[2.15] text-white transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[margin-inline-end:0.75rem] file:[border-inline-end-width:1px] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-[0_0_0_1px] focus:shadow-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100"
               id="formFileLg"
               type="file" 
               accept=".jpg, .jpeg, .png, .doc, .docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document, .pdf"
@@ -1029,14 +1029,14 @@ const readFileB = e => {
             <p className='italic text-white'>Accepted file formats: .jpeg, .png, .doc, .pdf</p>
 
           </div>
-          <div class="p-10 mb-3 w-96">
+          <div className="p-10 mb-3 w-96">
             <label
-              for="formFileLg"
-              class="mb-2 inline-block text-white dark:text-neutral-200 font-bold"
+              htmlFor="formFileLg"
+              className="mb-2 inline-block text-white dark:text-neutral-200 font-bold"
               >Select Second Statement</label
             >
             <input
-              class="relative m-0 block font-normal w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding py-[0.32rem] px-3 leading-[2.15] text-white transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[margin-inline-end:0.75rem] file:[border-inline-end-width:1px] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-[0_0_0_1px] focus:shadow-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100"
+              className="relative m-0 block font-normal w-full min-w-0 flex-auto cursor-pointer rounded border border-solid border-neutral-300 bg-clip-padding py-[0.32rem] px-3 leading-[2.15] text-white transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[margin-inline-end:0.75rem] file:[border-inline-end-width:1px] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-[0_0_0_1px] focus:shadow-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100"
               id="formFileLg2"
               type="file"
               accept=".jpg, .jpeg, .png, .doc, .docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document, .pdf"
@@ -1047,14 +1047,14 @@ const readFileB = e => {
 
     
     
-    <div class="flex justify-center">
+    <div className="flex justify-center">
     <h1 id = 'loaderText'className='text-white font-bold text-xl'style={{ opacity: 0}}>PROCESSING...</h1>
     </div>
-    <div class="flex justify-center">
+    <div className="flex justify-center">
     <img src={giffy} width={150} height={150} id='loader' style={{ opacity: 0}}/>
     </div>
 
-    <div class="flex justify-center">
+    <div className="flex justify-center">
     <button id='submitBtn'onClick={submitClick} style={{ opacity: 0}} className ='bg-[#00df9a] w-[150px] rounded-md font-bold my-6 mx-auto py-2 text-black flex flex-row justify-center hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300'>SUBMIT <AiOutlineArrowRight size={25}></AiOutlineArrowRight></button>
     </div>
 
@@ -1065,18 +1065,18 @@ const readFileB = e => {
       </div>
 
      
-      <div class="container mx-auto w-full bg-white py-16 px-4 z-10" style={{ display: 'none'}} id='form1'>
-            <div class="flex flex-row flex-wrap py-2">
+      <div className="container mx-auto w-full bg-white py-16 px-4 z-10" style={{ display: 'none'}} id='form1'>
+            <div className="flex flex-row flex-wrap py-2">
                
-                <main role="main" class="w-full sm:w-2/3 md:w-6/12 pt-1 px-2 ">
+                <main role="main" className="w-full sm:w-2/3 md:w-6/12 pt-1 px-2 ">
                 <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Transactions Over The Month</h1>
 
                     <Line data={datav} options={options} onUpdate={updatePlot}/>
                 </main>
                 
                 
-                <aside class="w-full sm:w-1/3 md:w-2/4 px-2">
-                <div class="top-0 p-4 w-full">
+                <aside className="w-full sm:w-1/3 md:w-2/4 px-2">
+                <div className="top-0 p-4 w-full">
                 <p className='text-[#00df90] font-bold  text-l'>Transactions Over Each Month</p>
 
                 <span>These bar charts show how your transactions frequency differs from month to month. From this you can work out whether you are spending too much and having to budget later in the month or have a relatively even spending habit.<br/><br/> <strong>Summary:</strong><br/></span>
@@ -1096,17 +1096,17 @@ const readFileB = e => {
             </div>
 
             <div className='w-full bg-black h-0.5'></div>
-            <div class="flex flex-row flex-wrap py-2 pt-9">
+            <div className="flex flex-row flex-wrap py-2 pt-9">
             <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Net Spend</h1>
 
                
-               <main role="main" class="w-full sm:w-2/3 md:w-3/12 pt-20 px-2 ">
+               <main role="main" className="w-full sm:w-2/3 md:w-3/12 pt-20 px-2 ">
                <div className='flex justify-center'><strong id='m1h1doh'>July</strong></div> 
 
                    <Doughnut data={m}/>
                </main>
 
-               <main role="main" class="w-full sm:w-2/3 md:w-3/12 pt-20 px-2 ">
+               <main role="main" className="w-full sm:w-2/3 md:w-3/12 pt-20 px-2 ">
                   <div id='secondDS6' style={{ opacity: 0}}>
                   <div className='flex justify-center'><strong id='m2h1doh'>July</strong></div> 
 
@@ -1114,8 +1114,8 @@ const readFileB = e => {
                                   </div>
 
                </main>
-          <aside class="w-full sm:w-1/3 md:w-1/4 px-2">
-               <div class="top-0 p-4 w-full">
+          <aside className="w-full sm:w-1/3 md:w-1/4 px-2">
+               <div className="top-0 p-4 w-full">
                <p className='text-[#00df90] font-bold  text-l'>Net Spend</p>
 
                <span>These pie charts give you a clear picture of how your balance has increased / decreased over the course of the year and how this compares between months<br/><br/> <strong>Summary:</strong><br/></span>
@@ -1133,17 +1133,17 @@ const readFileB = e => {
                 </aside>
            </div>
            <div className='w-full bg-black h-0.5'></div>
-            <div class="flex flex-row flex-wrap py-2 pt-9">
+            <div className="flex flex-row flex-wrap py-2 pt-9">
 
                
               
-               <main role="main" class="w-full sm:w-2/3 md:w-6/12 pt-20 px-2 ">
+               <main role="main" className="w-full sm:w-2/3 md:w-6/12 pt-20 px-2 ">
                <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Most Common</h1>
 
                    <Bar data={commonm1}/>
                </main>
-          <aside class="w-full sm:w-1/3 md:w-2/4 px-2">
-               <div class="top-0 p-4 w-full">
+          <aside className="w-full sm:w-1/3 md:w-2/4 px-2">
+               <div className="top-0 p-4 w-full">
                <p className='text-[#00df90] font-bold  text-l pt-10'>Comparing Most Common Transaction</p>
 
                <span>This chart shows you your most common transaction and what percentage of all transactions this makes up. This transaction is not necessarily the most expensive but it is still a useful tool to get a better idea of your spending habits. <br/><br/> <strong>Summary:</strong><br/></span>
@@ -1162,17 +1162,17 @@ const readFileB = e => {
            </div>
 
            <div className='w-full bg-black h-0.5'></div>
-            <div class="flex flex-row flex-wrap py-2 pt-9">
+            <div className="flex flex-row flex-wrap py-2 pt-9">
 
                
               
-               <main role="main" class="w-full sm:w-2/3 md:w-6/12 pt-20 px-2 ">
+               <main role="main" className="w-full sm:w-2/3 md:w-6/12 pt-20 px-2 ">
                <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Most Expensive</h1>
 
                    <Bar data={ex1}/>
                </main>
-          <aside class="w-full sm:w-1/3 md:w-2/4 px-2">
-               <div class="top-0 p-4 w-full">
+          <aside className="w-full sm:w-1/3 md:w-2/4 px-2">
+               <div className="top-0 p-4 w-full">
                <p className='text-[#00df90] font-bold  text-l pt-10'>Comparing Most Expensive Transaction</p>
 
                <span>This chart shows your most expensive transaction and how this compares to your average transaction amount. This could be useful to highlight any overspending and get an idea of how consistent the amount your expenses are.<br/><br/> <strong>Summary:</strong><br/></span>
@@ -1190,17 +1190,17 @@ const readFileB = e => {
                 </aside>
            </div>
            <div className='w-full bg-black h-0.5'></div>
-            <div class="flex flex-row flex-wrap py-2 pt-9">
+            <div className="flex flex-row flex-wrap py-2 pt-9">
 
                
               
-               <main role="main" class="w-full sm:w-2/3 md:w-6/12 pt-20 px-2 ">
+               <main role="main" className="w-full sm:w-2/3 md:w-6/12 pt-20 px-2 ">
                <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Comparing Average Daily Spend</h1>
 
                    <Bar data={ds}/>
                </main>
-          <aside class="w-full sm:w-1/3 md:w-2/4 px-2">
-               <div class="top-0 p-4 w-full">
+          <aside className="w-full sm:w-1/3 md:w-2/4 px-2">
+               <div className="top-0 p-4 w-full">
                <p className='text-[#00df90] font-bold  text-l pt-10'>Comparing Average Daily Spend</p>
 
                <span>This chart shows you your average daily spend. This could be useful as it may be higher than expected and you may wish to investigate further where most of you daily expense is coming from.<br/><br/> <strong>Summary:</strong><br/></span>
@@ -1276,18 +1276,18 @@ const readFileB = e => {
           </Toolbar>
         </AppBar>
 
-        <div class="container mx-auto w-full bg-white py-16 px-4 z-10">
-            <div class="flex flex-row flex-wrap py-2">
+        <div className="container mx-auto w-full bg-white py-16 px-4 z-10">
+            <div className="flex flex-row flex-wrap py-2">
                
-                <main role="main" class="w-full sm:w-2/3 md:w-6/12 pt-1 px-2 ">
+                <main role="main" className="w-full sm:w-2/3 md:w-6/12 pt-1 px-2 ">
                 <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Transactions Over June Compared to July</h1>
 
                     <Line data={datav} options={options}/>
                 </main>
                 
                 
-                <aside class="w-full sm:w-1/3 md:w-2/4 px-2">
-                <div class="top-0 p-4 w-full">
+                <aside className="w-full sm:w-1/3 md:w-2/4 px-2">
+                <div className="top-0 p-4 w-full">
                 <p className='text-[#00df90] font-bold  text-l'>Transactions Over Each Month</p>
 
                 <span>These bar charts show how your transactions frequency differs from month to month. From this you can work out whether you are spending too much and having to budget later in the month or have a relatively even spending habit.<br/><br/> <strong>Summary:</strong><br/></span>
@@ -1306,21 +1306,21 @@ const readFileB = e => {
             </div>
 
             <div className='w-full bg-black h-0.5'></div>
-            <div class="flex flex-row flex-wrap py-2 pt-9">
+            <div className="flex flex-row flex-wrap py-2 pt-9">
             <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Net Spend</h1>
 
                
-               <main role="main" class="w-full sm:w-2/3 md:w-3/12 pt-20 px-2 ">
+               <main role="main" className="w-full sm:w-2/3 md:w-3/12 pt-20 px-2 ">
                <div className='flex justify-center'><strong>July</strong></div> 
                    <Doughnut data={m}/>
                </main>
-               <main role="main" class="w-full sm:w-2/3 md:w-3/12 pt-20 px-2 ">
+               <main role="main" className="w-full sm:w-2/3 md:w-3/12 pt-20 px-2 ">
                <div className='flex justify-center'><strong>June</strong></div> 
 
                    <Doughnut data={netSpendMonth2}/>
                </main>
-          <aside class="w-full sm:w-1/3 md:w-1/4 px-2">
-               <div class="top-0 p-4 w-full">
+          <aside className="w-full sm:w-1/3 md:w-1/4 px-2">
+               <div className="top-0 p-4 w-full">
                <p className='text-[#00df90] font-bold  text-l'>Net Spend</p>
 
                <span>These pie charts give you a clear picture of how your balance has increased / decreased over the course of the year and how this compares between months<br/><br/> <strong>Summary:</strong><br/></span>
@@ -1336,17 +1336,17 @@ const readFileB = e => {
                 </aside>
            </div>
            <div className='w-full bg-black h-0.5'></div>
-            <div class="flex flex-row flex-wrap py-2 pt-9">
+            <div className="flex flex-row flex-wrap py-2 pt-9">
 
                
               
-               <main role="main" class="w-full sm:w-2/3 md:w-6/12 pt-20 px-2 ">
+               <main role="main" className="w-full sm:w-2/3 md:w-6/12 pt-20 px-2 ">
                <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Most Common</h1>
 
                    <Bar data={commonm1}/>
                </main>
-          <aside class="w-full sm:w-1/3 md:w-2/4 px-2">
-               <div class="top-0 p-4 w-full">
+          <aside className="w-full sm:w-1/3 md:w-2/4 px-2">
+               <div className="top-0 p-4 w-full">
                <p className='text-[#00df90] font-bold  text-l pt-10'>Comparing Most Common Transaction</p>
 
                <span>This chart shows you your most common transaction and what percentage of all transactions this makes up. This transaction is not necessarily the most expensive but it is still a useful tool to get a better idea of your spending habits.<br/><br/> <strong>Summary:</strong><br/></span>
@@ -1364,17 +1364,17 @@ const readFileB = e => {
            </div>
 
            <div className='w-full bg-black h-0.5'></div>
-            <div class="flex flex-row flex-wrap py-2 pt-9">
+            <div className="flex flex-row flex-wrap py-2 pt-9">
 
                
               
-               <main role="main" class="w-full sm:w-2/3 md:w-6/12 pt-20 px-2 ">
+               <main role="main" className="w-full sm:w-2/3 md:w-6/12 pt-20 px-2 ">
                <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Most Expensive</h1>
 
                    <Bar data={ex1}/>
                </main>
-          <aside class="w-full sm:w-1/3 md:w-2/4 px-2">
-               <div class="top-0 p-4 w-full">
+          <aside className="w-full sm:w-1/3 md:w-2/4 px-2">
+               <div className="top-0 p-4 w-full">
                <p className='text-[#00df90] font-bold  text-l pt-10'>Comparing Most Expensive Transaction</p>
 
                <span>This chart shows your most expensive transaction and how this compares to your average transaction amount. This could be useful to highlight any overspending and get an idea of how consistent the amount your expenses are.<br/><br/> <strong>Summary:</strong><br/></span>
@@ -1391,17 +1391,17 @@ const readFileB = e => {
                 </aside>
            </div>
            <div className='w-full bg-black h-0.5'></div>
-            <div class="flex flex-row flex-wrap py-2 pt-9">
+            <div className="flex flex-row flex-wrap py-2 pt-9">
 
                
               
-               <main role="main" class="w-full sm:w-2/3 md:w-6/12 pt-20 px-2 ">
+               <main role="main" className="w-full sm:w-2/3 md:w-6/12 pt-20 px-2 ">
                <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Transaction size variety</h1>
 
                    <Bar data={dailySpend}/>
                </main>
-          <aside class="w-full sm:w-1/3 md:w-2/4 px-2">
-               <div class="top-0 p-4 w-full">
+          <aside className="w-full sm:w-1/3 md:w-2/4 px-2">
+               <div className="top-0 p-4 w-full">
                <p className='text-[#00df90] font-bold  text-l pt-10'>Comparing Transaction Amounts</p>
 
                <span>This chart shows you your average daily spend. This could be useful as it may be higher than expected and you may wish to investigate further where most of you daily expense is coming from.<br/><br/> <strong>Summary:</strong><br/></span>

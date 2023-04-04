@@ -24,10 +24,10 @@ const Hero = () => {
         
         {/* <a className='bg-[#00df9a] w-[300px] rounded-md font-bold my-6 mx-auto py-6 text-black flex flex-row justify-center  hover:bg-gray-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300'><Link activeClass="active" to="heading1" spy={true} smooth={true}>UPLOAD NOW </Link><AiOutlineArrowDown size={20}/></a>  */}
        
-        <div class="flex justify-center">
+        <div className="flex justify-center">
 
-        <button id ='scrollToUploadBtn'class="bg-[#00B27B] hover:bg-[#004731] text-white font-bold py-2 px-4 rounded-full w-40">
-        <Link activeClass="active" to="heading1" spy={true} smooth={true}>Upload </Link>  <div class="flex justify-center">
+        <button id ='scrollToUploadBtn'className="bg-[#00B27B] hover:bg-[#004731] text-white font-bold py-2 px-4 rounded-full w-40">
+        <Link activeClass="active" to="heading1" spy={true} smooth={true}>Upload </Link>  <div className="flex justify-center">
             <AiOutlineCaretDown style={{alignText:'center'}}size={30}/></div>
             
         </button>
