@@ -3,10 +3,10 @@
 
 describe('e2e Tests', () => {
   it('T01 Should Successfully Upload Single PDF', () => {
-    cy.visit('https://olliebooth2001.github.io/fe5/');
+    cy.visit('http://localhost:3000/fe5');
 
 
-    // cy.get('button[id$="scrollToUploadBtn"]').click();
+     cy.get('button[id$="scrollToUploadBtn"]').click();
 
 
     // cy.wait(2000);
