@@ -1,16 +1,16 @@
-import React, {useState} from 'react'
-import {AiOutlineClose,AiOutlineMenu,AiOutlineDashboard,AiOutlineInfoCircle,AiOutlineUpload} from 'react-icons/ai'
-import {Link} from 'react-scroll'
-import mLog from '../media/m..png'
+import React, {useState} from 'react';
+import {AiOutlineClose,AiOutlineMenu,AiOutlineDashboard,AiOutlineInfoCircle,AiOutlineUpload} from 'react-icons/ai';
+import {Link} from 'react-scroll';
+import mLog from '../media/m..png';
 
 const Navbar = () => {
 
 
-    const [nav, setNav] = useState(false)
+    const [nav, setNav] = useState(false);
 
     const navHandler = () =>{
-        setNav(!nav)
-    }
+        setNav(!nav);
+    };
   return (
     <div className='flex justify-between items-center h-24 max-w-[1240] px-4 text-white sticky'>
         <img src={mLog} style={{ width: 60, height: 60 }}></img>
@@ -19,18 +19,18 @@ const Navbar = () => {
     
              <p className="m-16 relative group">
                 <li className='p-4 font-bold tracking-widest flex items-center cursor-pointer'><Link activeClass="active" to="info" spy={true} smooth={true}>INFORMATION</Link><AiOutlineInfoCircle size={20}/></li>
-                <span className="absolute -bottom-1 left-0 w-0 h-1 bg-[#00df9a] transition-all group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-1 bg-[#00A370] transition-all group-hover:w-full"></span>
             </p>
             <p className="m-16 relative group">
             <li className='p-4 font-bold tracking-widest flex items-center cursor-pointer'><Link activeClass="active" to="dis" spy={true} smooth={true}>UPLOAD</Link> <AiOutlineUpload size={20}/></li>
-            <span className="absolute -bottom-1 left-0 w-0 h-1 bg-[#00df9a] transition-all group-hover:w-full"></span>
+            <span className="absolute -bottom-1 left-0 w-0 h-1 bg-[#00A370] transition-all group-hover:w-full"></span>
             </p>
 
             
 
             <p className="m-16 relative group">
             <li className='p-4 font-bold tracking-widest flex items-center cursor-pointer'><Link activeClass="active" to="heading1" spy={true} smooth={true}>DASHBOARD</Link>  <AiOutlineDashboard size={20}/></li>
-            <span className="absolute -bottom-1 left-0 w-0 h-1 bg-[#00df9a] transition-all group-hover:w-full"></span>
+            <span className="absolute -bottom-1 left-0 w-0 h-1 bg-[#00A370] transition-all group-hover:w-full"></span>
             </p>
             
 
@@ -52,7 +52,7 @@ const Navbar = () => {
             </ul>
         </div> */}
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

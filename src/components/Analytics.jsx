@@ -21,7 +21,7 @@ import Slide from '@mui/material/Slide';
 
 // import * as os from 'os';
 // import {TmpFilesystem, awaitWriteFinish} from "like-fs";
-import giffy from '../media/gif.webp'
+import giffy from '../media/gif.webp';
 const { DocumentAnalysisClient, AzureKeyCredential } = require("@azure/ai-form-recognizer");
 
 // const fs = new TmpFilesystem({
@@ -66,6 +66,9 @@ var moneyIn = [];var moneyIn2 = [];
 var m1Highest = 0; var m2highest=0;
 var m1PerInc = 0; var m2PerInc = 0;
 var netBalSign = "";var netBalSign2;
+
+var dontAdd = false;
+
 var invalid = false;
 var options = {
   indexAxis: 'y',
@@ -140,7 +143,7 @@ function resetValues2(){
 
 
 function startsWithCapital(word){
-  return word.charAt(2) === word.charAt(2).toUpperCase()
+  return word.charAt(2) === word.charAt(2).toUpperCase();
 }
 
 async function testSubmit2(buffer) {
@@ -149,7 +152,7 @@ async function testSubmit2(buffer) {
       console.log(`status: ${status}`);
     },
   });
-  show()
+  show();
 
   const { documents, pages, tables } = await poller.pollUntilDone();
   console.log("Documents:");
@@ -162,8 +165,13 @@ async function testSubmit2(buffer) {
       );
       if(name == "Bank Name"){
         if(field.confidence<0.200){
-            invalid=true
+            invalid=true;
+            console.log(invalid + 'yooo');
         }
+      }if(name == "undefined"){
+        invalid=true;
+        console.log(invalid + 'yooo');
+
       }
     }
   }
@@ -209,33 +217,44 @@ async function testSubmit2(buffer) {
         if(cell.content.substring(cell.content.length-7,cell.content.length).includes(".")){       
           for(let i=cell.content.length;i>cell.content.length-10;i--){        
               if(cell.content.charAt(i)== " "){
-                let outgoing = cell.content.substring(i+1,cell.content.length)
-                let removedComma = outgoing.replace(',', '')
-                moneyIn2.push(removedComma)
+                let outgoing = cell.content.substring(i+1,cell.content.length);
+                let removedComma = outgoing.replace(',', '');
+                moneyIn2.push(removedComma);
               }
           }
         }
         else{
-          commonExpendature.push(cell.content)
+          commonExpendature.push(cell.content);
         }
        }
-       if(cell.columnIndex == 4 && cell.content != "" && cell.content != "Money in" && debitField2 ==true){
-        moneyIn2.push(cell.content)
-        console.log(moneyIn)
+      //  if(cell.columnIndex == 4 && cell.content != "" && cell.content.includes('.') == true){
+      //   if(cell.content.includes('£')){
+      //       var newVal = cell.content.replace('£','')
+      //       moneyIn.push(newVal);
+       //debitField2 ==true
+       if(cell.columnIndex == 4 && cell.content != "" && cell.content != "Money in" && cell.content.includes('.') == true){
+
+        if(cell.content.includes('£')){
+                var newVal = cell.content.replace('£','')
+                moneyIn2 .push(newVal);
+        }else{
+          moneyIn2.push(cell.content);
+        }
+        
      }
      if(cell.columnIndex == 5 && cell.content != "" && cell.content != "Money out" && debitField2 ==true){
-      fruits2.push(parseFloat(cell.content))
-      console.log(fruits2)
+      fruits2.push(parseFloat(cell.content));
+      console.log(fruits2);
     }
-       if(cell.columnIndex == 3 && cell.content !="" && cell.content!="Money out"){
-        fruits2.push(cell.content)
-        console.log(fruits2.length)
+       if(cell.columnIndex == 3 && cell.content !="" && cell.content!="Money out" && cell.content !="Money in"){
+        fruits2.push(cell.content);
+        console.log(fruits2.length);
        }
     }
     fruits2.forEach(item =>{
       totalSpent2 +=parseFloat(item);    
     });
-    var numberArray = []
+    var numberArray = [];
     for (var i = 0; i < fruits.length; i++){
       numberArray.push(parseInt(fruits[i]));
     }
@@ -245,8 +264,8 @@ async function testSubmit2(buffer) {
             largestTran2 = numberArray[i];
         }
     }
-    averageTranCost2 = totalSpent2/numberArray.length   
-    console.log(largestTran2)
+    averageTranCost2 = totalSpent2/numberArray.length   ;
+    console.log(largestTran2);
     moneyIn2.forEach(item =>{
       totalMoneyIn +=parseFloat(item);
     });
@@ -285,9 +304,9 @@ async function testSubmit2(buffer) {
     }
     mostC2 = item;
     numberOfCommonTrans2 = mf;
-    percentagem12 = ((numberOfCommonTrans2/commonExpendature.length)*100).toFixed(2)
+    percentagem12 = ((numberOfCommonTrans2/commonExpendature.length)*100).toFixed(2);
     document.getElementById('commonSpend').innerText=`Most common transaction: ${item} ( ${mf} times )  `;
-    document.getElementById('percentOfTotalTransactions').innerHTML = ((numberOfCommonTrans2/commonExpendature.length)*100).toFixed(2) +'% of total transactions'
+    document.getElementById('percentOfTotalTransactions').innerHTML = ((numberOfCommonTrans2/commonExpendature.length)*100).toFixed(2) +'% of total transactions';
 
     if(month2 == "Jan"){month2="January";}
     else if(month2 == "Feb"){month2="February";}
@@ -304,7 +323,7 @@ async function testSubmit2(buffer) {
 
   }
   hide();
-  showSubmit()
+  showSubmit();
 
   if(  monthExpendature >monthlyIncome2){
     document.getElementById('netbalm2').innerText='+£' + netBalanceIncreaseDecrease2.toFixed(2);
@@ -317,37 +336,37 @@ async function testSubmit2(buffer) {
   document.getElementById('secondDS1').style.opacity =100;document.getElementById('secondDS2').style.opacity =100;document.getElementById('secondDS3').style.opacity =100;document.getElementById('secondDS4').style.opacity =100;document.getElementById('secondDS5').style.opacity =100;
   document.getElementById('secondDS6').style.opacity =100;
 
-  document.getElementById('weeklySpending').innerHTML = ' Month of '+ month + ' number of transactions per week \n</br>' + month + ' 1<sup>st</sup> - 7<sup>th</sup>:  \n' + map1.get('week1')+'</br>  ' + month + ' 7<sup>th</sup> - 14<sup>th</sup>:  \n' + map1.get('week2')+'</br>  ' + month + ' 14<sup>th</sup> - 21<sup>st</sup>:  \n' + map1.get('week3')+'</br>  ' + month + ' 21<sup>st</sup> - End Of Month:  \n' + map1.get('week4')+'</br>  ' 
+  document.getElementById('weeklySpending').innerHTML = ' Month of '+ month + ' number of transactions per week \n</br>' + month + ' 1<sup>st</sup> - 7<sup>th</sup>:  \n' + map1.get('week1')+'</br>  ' + month + ' 7<sup>th</sup> - 14<sup>th</sup>:  \n' + map1.get('week2')+'</br>  ' + month + ' 14<sup>th</sup> - 21<sup>st</sup>:  \n' + map1.get('week3')+'</br>  ' + month + ' 21<sup>st</sup> - End Of Month:  \n' + map1.get('week4')+'</br>  ' ;
   document.getElementById('m2expensive').innerText = '£'+largestTran2;
   document.getElementById('mostcm2').innerText = mostC2;
-  document.getElementById('m2percent').innerText = 'Made up ' +percentagem12+'% of all transactions'
+  document.getElementById('m2percent').innerText = 'Made up ' +percentagem12+'% of all transactions';
 
-  var arr = [week1No2,week2No2,week3No2,week4No2]
-  arr.sort()
-  var largest_element = arr[arr.length-1]
+  var arr = [week1No2,week2No2,week3No2,week4No2];
+  arr.sort();
+  var largest_element = arr[arr.length-1];
   var smallest_element = arr[0];
 
-  if(largest_element==week1No2){document.getElementById('highestw2').innerText='1 - 7';m2highest =1}
-  else if(largest_element==week2No2){document.getElementById('highestw2').innerText='7 - 14';m2highest =2}
-  else if(largest_element==week3No2){document.getElementById('highestw2').innerText='14 - 21';m2highest =2}
-  else if(largest_element==week4No2){document.getElementById('highestw2').innerText='21 - End of month';m2highest =3}
-  if(smallest_element==week1No2){document.getElementById('lowestw2').innerText='1 - 7'}
-  else if(smallest_element==week2No2){document.getElementById('lowestw2').innerText='7 - 14'}
-  else if(smallest_element==week3No2){document.getElementById('lowestw2').innerText='14 - 21'}
-  else if(smallest_element==week4No2){document.getElementById('lowestw2').innerText='21 - End of month'}
+  if(largest_element==week1No2){document.getElementById('highestw2').innerText='1 - 7';m2highest =1;}
+  else if(largest_element==week2No2){document.getElementById('highestw2').innerText='7 - 14';m2highest =2;}
+  else if(largest_element==week3No2){document.getElementById('highestw2').innerText='14 - 21';m2highest =2;}
+  else if(largest_element==week4No2){document.getElementById('highestw2').innerText='21 - End of month';m2highest =3;}
+  if(smallest_element==week1No2){document.getElementById('lowestw2').innerText='1 - 7';}
+  else if(smallest_element==week2No2){document.getElementById('lowestw2').innerText='7 - 14';}
+  else if(smallest_element==week3No2){document.getElementById('lowestw2').innerText='14 - 21';}
+  else if(smallest_element==week4No2){document.getElementById('lowestw2').innerText='21 - End of month';}
 
   
 
-  m2PerInc = (largestTran2 - averageTranCost2)/averageTranCost2 * 100
+  m2PerInc = (largestTran2 - averageTranCost2)/averageTranCost2 * 100;
   document.getElementById('month2h1').innerText=month2;
 
-  console.log(largestTran2 +' '+ averageTranCost2 +' '+ m2PerInc.toFixed(2))
+  console.log(largestTran2 +' '+ averageTranCost2 +' '+ m2PerInc.toFixed(2));
   updatem2Summary();
   document.getElementById('month2h1').innerText=month2;document.getElementById('month2h1p').innerText=month2;  document.getElementById('month2h1c').innerText=month2;document.getElementById('month2h1e').innerText=month2;document.getElementById('month2h1d').innerText=month2;document.getElementById('month2h1s').innerText=month2;
 
   showMonth2Summary();
-  console.log(month + ' ' + month2)
-  activateSubmitAndDash()
+  console.log(month + ' ' + month2);
+  activateSubmitAndDash();
 
 }
 
@@ -361,7 +380,7 @@ async function testSubmit(buffer) {
       console.log(`status: ${status}`);
     },
   });
-  show()
+  show();
   const { documents, pages, tables } = await poller.pollUntilDone();
   console.log("Documents:");
   for (const document of documents || []) {
@@ -374,8 +393,8 @@ async function testSubmit(buffer) {
       );
       if(name == "Bank Name"){
         if(field.confidence<0.200){
-            invalid=true 
-            console.log('baloney')
+            invalid=true ;
+            console.log('baloney');
         }
       }
     }
@@ -421,37 +440,47 @@ async function testSubmit(buffer) {
           map1.set('week4',week4No);
         }
        }
-      if(cell.columnIndex == 1 && startsWithCapital(cell.content)){
+      if(cell.columnIndex == 1 && startsWithCapital(cell.content) && cell.content != "Money in"){
         if(cell.content.substring(cell.content.length-7,cell.content.length).includes(".")){       
           for(let i=cell.content.length;i>cell.content.length-10;i--){        
               if(cell.content.charAt(i)== " "){
-                let outgoing = cell.content.substring(i+1,cell.content.length)
-                let removedComma = outgoing.replace(',', '')
-                moneyIn.push(removedComma)
+                let outgoing = cell.content.substring(i+1,cell.content.length);
+                let removedComma = outgoing.replace(',', '');
+                moneyIn.push(removedComma);
+                console.log(moneyIn);
               }
           }
         }
         else{
-          commonExpendature.push(cell.content)
+          commonExpendature.push(cell.content);
         }
        }
-       if(cell.columnIndex == 4 && cell.content != "" && cell.content != "Money in" && debitField1 ==true){
-        moneyIn.push(cell.content)
-        console.log(moneyIn)
+       //&& debitField1 ==true
+       //&& cell.content.match(/[a-zA-Z]/)==falsecell.content != "Money in"  && cell.content != "Money out"
+       if(cell.columnIndex == 4 && cell.content != "" && cell.content.includes('.') == true){
+        if(cell.content.includes('£')){
+            var newVal = cell.content.replace('£','')
+            moneyIn.push(newVal);
+
+        }
+        else{
+          moneyIn.push(cell.content);
+        }
+        
      }
      if(cell.columnIndex == 5 && cell.content != "" && cell.content != "Money out" && debitField1 ==true){
-      fruits.push(parseFloat(cell.content))
-      console.log(fruits)
+      fruits.push(parseFloat(cell.content));
+      console.log(fruits);
     }
-       if(cell.columnIndex == 3 && cell.content !="" && cell.content!="Money out"){
-        fruits.push(cell.content)
-        console.log(fruits.length)
+       if(cell.columnIndex == 3 && cell.content !="" && cell.content!="Money out"&& cell.content!="Money in"){
+        fruits.push(cell.content);
+        console.log(fruits);
        }
     }
     fruits.forEach(item =>{
       totalSpent +=parseFloat(item);    
     });
-    var numberArray = []
+    var numberArray = [];
     for (var i = 0; i < fruits.length; i++){
       numberArray.push(parseInt(fruits[i]));
     }
@@ -461,8 +490,8 @@ async function testSubmit(buffer) {
             largestTran = numberArray[i];
         }
     }
-    averageTranCost = totalSpent/numberArray.length   
-    console.log(largestTran)
+    averageTranCost = totalSpent/numberArray.length   ;
+    console.log(largestTran);
     moneyIn.forEach(item =>{
       totalMoneyIn +=parseFloat(item);
     });
@@ -511,9 +540,9 @@ async function testSubmit(buffer) {
     }
     mostC = item;
     numberOfCommonTrans = mf;
-    percentagem1 = ((numberOfCommonTrans/commonExpendature.length)*100).toFixed(2)
+    percentagem1 = ((numberOfCommonTrans/commonExpendature.length)*100).toFixed(2);
     document.getElementById('commonSpend').innerText=`Most common transaction: ${item} ( ${mf} times )  `;
-    document.getElementById('percentOfTotalTransactions').innerHTML = ((numberOfCommonTrans/commonExpendature.length)*100).toFixed(2) +'% of total transactions'
+    document.getElementById('percentOfTotalTransactions').innerHTML = ((numberOfCommonTrans/commonExpendature.length)*100).toFixed(2) +'% of total transactions';
 
     if(month == "Jan"){month="January";}
     else if(month == "Feb"){month="February";}
@@ -529,36 +558,39 @@ async function testSubmit(buffer) {
 
   
 
-    document.getElementById('weeklySpending').innerHTML = ' Month of '+ month + ' number of transactions per week \n</br>' + month + ' 1<sup>st</sup> - 7<sup>th</sup>:  \n' + map1.get('week1')+'</br>  ' + month + ' 7<sup>th</sup> - 14<sup>th</sup>:  \n' + map1.get('week2')+'</br>  ' + month + ' 14<sup>th</sup> - 21<sup>st</sup>:  \n' + map1.get('week3')+'</br>  ' + month + ' 21<sup>st</sup> - End Of Month:  \n' + map1.get('week4')+'</br>  ' 
+    document.getElementById('weeklySpending').innerHTML = ' Month of '+ month + ' number of transactions per week \n</br>' + month + ' 1<sup>st</sup> - 7<sup>th</sup>:  \n' + map1.get('week1')+'</br>  ' + month + ' 7<sup>th</sup> - 14<sup>th</sup>:  \n' + map1.get('week2')+'</br>  ' + month + ' 14<sup>th</sup> - 21<sup>st</sup>:  \n' + map1.get('week3')+'</br>  ' + month + ' 21<sup>st</sup> - End Of Month:  \n' + map1.get('week4')+'</br>  ' ;
   }
 
-   m1PerInc = (largestTran - averageTranCost)/averageTranCost * 100
-  hide()
-  showSubmit()
-  updatem1Summary()
-  showMonth1Summary()
-  activateSubmitAndDash()
+   m1PerInc = (largestTran - averageTranCost)/averageTranCost * 100;
+  hide();
+  showSubmit();
+  updatem1Summary();
+  showMonth1Summary();
+  activateSubmitAndDash();
+
+  console.log(fruits);
+  console.log(moneyIn);
 }
 
 function updatem1Summary(){
   if(m1Highest==1){
-    document.getElementById('spendingPatternM1').innerText = 'You had a relatively inconsistent spending pattern with the highest number of transactions at the start of the month, by altering your spending habits and spending less at the start you could avoid having to budget later in the month.'
-  }else if(m1Highest==2 ){document.getElementById('spendingPatternM1').innerText = 'You had a relatively consistent spending pattern with the highest number of transactions around the middle of the month, although you did not have the most transactions at the start of the month you could still avoid having to budget later in the month by being more consistent.'}
-   else if(m1Highest==3){document.getElementById('spendingPatternM1').innerText = 'You had a relatively inconsistent spending pattern with the highest number of transactions at the end of the month. It may be the case that you spend the most around payday and could be worth considering saving that money instead'}
-   console.log("Yoooo"+m1Highest)
-   document.getElementById('commonspendSum1').innerText = 'Your most common purchase makes up '+percentagem1+'% of all transactions, it may be worth investigating whether this is an essential purchase or whether you could cut down on it '
-   document.getElementById('averageSpendSum1').innerText = 'Your most expensive transaction is ' + m1PerInc.toFixed(2)+ '% more expensive than your average transaction cost. If this is not an essential purchase it may be worth either reconsidering the purchase or paying in installments'  
-   document.getElementById('dailySpendSum1').innerText = 'Your average daily cost is £' + (totalSpent/30).toFixed(2)+ ', if you are looking to save money it may be worth investigating this further and seeing where exactly you are spending your money on a day by day basis. Small purchases can gradually add up over time.'
+    document.getElementById('spendingPatternM1').innerText = 'You had a relatively inconsistent spending pattern with the highest number of transactions at the start of the month, by altering your spending habits and spending less at the start you could avoid having to budget later in the month.';
+  }else if(m1Highest==2 ){document.getElementById('spendingPatternM1').innerText = 'You had a relatively consistent spending pattern with the highest number of transactions around the middle of the month, although you did not have the most transactions at the start of the month you could still avoid having to budget later in the month by being more consistent.';}
+   else if(m1Highest==3){document.getElementById('spendingPatternM1').innerText = 'You had a relatively inconsistent spending pattern with the highest number of transactions at the end of the month. It may be the case that you spend the most around payday and could be worth considering saving that money instead';}
+   console.log("Yoooo"+m1Highest);
+   document.getElementById('commonspendSum1').innerText = 'Your most common purchase makes up '+percentagem1+'% of all transactions, it may be worth investigating whether this is an essential purchase or whether you could cut down on it ';
+   document.getElementById('averageSpendSum1').innerText = 'Your most expensive transaction is ' + m1PerInc.toFixed(2)+ '% more expensive than your average transaction cost. If this is not an essential purchase it may be worth either reconsidering the purchase or paying in installments'  ;
+   document.getElementById('dailySpendSum1').innerText = 'Your average daily cost is £' + (totalSpent/30).toFixed(2)+ ', if you are looking to save money it may be worth investigating this further and seeing where exactly you are spending your money on a day by day basis. Small purchases can gradually add up over time.';
 }
 function updatem2Summary(){
 
   if(m2highest==1){
-    document.getElementById('spendingPatternM2').innerText = 'You had a relatively inconsistent spending pattern with the highest number of transactions at the start of the month, by altering your spending habits and spending less at the start you could avoid having to budget later in the month.'
-  }else if(m2highest==2){document.getElementById('spendingPatternM2').innerText = 'You had a relatively consistent spending pattern with the highest number of transactions around the middle of the month, although you did not have the most transactions at the start of the month you could still avoid having to budget later in the month by being more consistent.'}
-   else if(m2highest==3){document.getElementById('spendingPatternM2').innerText = 'You had a relatively inconsistent spending pattern with the highest number of transactions at the end of the month. It may be the case that you spend the most around payday and could be worth considering saving that money instead'}
-   document.getElementById('commonspendSum2').innerText = 'Your most common purchase makes up '+percentagem12+'% of all transactions, it may be worth investigating whether this is an essential purchase or whether you could cut down on it '
-   document.getElementById('averageSpendSum2').innerText = 'Your most expensive transaction is ' + m2PerInc.toFixed(2)+ '% more expensive than your average transaction cost. If this is not an essential purchase it may be worth either reconsidering the purchase or paying in installments'  
-   document.getElementById('dailySpendSum2').innerText = 'Your average daily cost is £' + (totalSpent2/30).toFixed(2)+ ', if you are looking to save money it may be worth investigating this further and seeing where exactly you are spending your money on a day by day basis. Small purchases can gradually add up over time.'
+    document.getElementById('spendingPatternM2').innerText = 'You had a relatively inconsistent spending pattern with the highest number of transactions at the start of the month, by altering your spending habits and spending less at the start you could avoid having to budget later in the month.';
+  }else if(m2highest==2){document.getElementById('spendingPatternM2').innerText = 'You had a relatively consistent spending pattern with the highest number of transactions around the middle of the month, although you did not have the most transactions at the start of the month you could still avoid having to budget later in the month by being more consistent.';}
+   else if(m2highest==3){document.getElementById('spendingPatternM2').innerText = 'You had a relatively inconsistent spending pattern with the highest number of transactions at the end of the month. It may be the case that you spend the most around payday and could be worth considering saving that money instead';}
+   document.getElementById('commonspendSum2').innerText = 'Your most common purchase makes up '+percentagem12+'% of all transactions, it may be worth investigating whether this is an essential purchase or whether you could cut down on it ';
+   document.getElementById('averageSpendSum2').innerText = 'Your most expensive transaction is ' + m2PerInc.toFixed(2)+ '% more expensive than your average transaction cost. If this is not an essential purchase it may be worth either reconsidering the purchase or paying in installments'  ;
+   document.getElementById('dailySpendSum2').innerText = 'Your average daily cost is £' + (totalSpent2/30).toFixed(2)+ ', if you are looking to save money it may be worth investigating this further and seeing where exactly you are spending your money on a day by day basis. Small purchases can gradually add up over time.';
 
   }
 
@@ -653,7 +685,7 @@ options: {
 
 function show() {
   let pic = document.getElementById("loader");
-  let text = document.getElementById("loaderText")
+  let text = document.getElementById("loaderText");
 
   pic.style.opacity = 100;
   pic.style.display = 'inherit';
@@ -695,7 +727,7 @@ function showMonth2Summary(){
 }
 function hide(){
   let pic = document.getElementById("loader");
-  let text = document.getElementById("loaderText")
+  let text = document.getElementById("loaderText");
   pic.style.opacity = 0;
   text.style.opacity = 0;
 
@@ -792,6 +824,8 @@ var data3 = {
     },
 ]
 };
+
+
 var netSpendMonthUpdate = {
   labels: ["Money In (£)","Money Out (£)"],
   datasets:[
@@ -801,6 +835,9 @@ var netSpendMonthUpdate = {
     }
 ]
 };
+
+
+
 var netSpendMonth2Update = {
   labels: ["Money In (£)","Money Out (£)"],
   datasets:[
@@ -810,6 +847,7 @@ var netSpendMonth2Update = {
     }
 ]
 };
+
 var dailySpendUpdated = {
   labels: [month,month2],
 
@@ -863,15 +901,23 @@ const options2 = {
   },
 };
 
-const [datav, setData] = useState(data2); // REMOVED BRACKETS
-const [m, setDataPie] = useState(netSpendMonth1); // REMOVED BRACKETS
-const [pie2, setDataPie2] = useState(netSpendMonth1); // REMOVED BRACKETS
+const [datav, setData] = useState(data2); 
+const [m, setDataPie] = useState(netSpendMonth1); 
 
-const [commonm1, setDatacm1] = useState(mostCommon1); // REMOVED BRACKETS
-const [ex1, setDataExp] = useState(expensive); // REMOVED BRACKETS
-const [ds, setDatads] = useState(dailySpend); // REMOVED BRACKETS
 
-const [options, setOptions] = useState(options2); // REMOVED BRACKETS
+
+
+const [pie2, setDataPie2] = useState(netSpendMonth1); 
+
+
+
+
+
+const [commonm1, setDatacm1] = useState(mostCommon1); 
+const [ex1, setDataExp] = useState(expensive); 
+const [ds, setDatads] = useState(dailySpend); 
+
+const [options, setOptions] = useState(options2); 
 
 
 const updatePlot = () => {
@@ -882,15 +928,15 @@ const updatePlot = () => {
   setDatacm1(mostCommonUpdated);
   setDataExp(expensiveUpdated);
   setDatads(dailySpendUpdated);
-  setDataPie2(netSpendMonth2Update)
+  setDataPie2(netSpendMonth2Update);
 
 
-  console.log(month2 +" "+ map2+" "+totalSpent2 +" "+monthlyIncome2 +" "+week1No2 +" "+netBalanceIncreaseDecrease2 +" "+fruits2 +" "+numberOfCommonTrans2 +" "+mostC2+" "+largestTran2+" "+averageTranCost2+" "+percentagem12+" "+threeCol2+" "+moneyIn2)
-  console.log(month +" "+ map1+" "+totalSpent +" "+monthlyIncome +" "+week1No +" "+netBalanceIncreaseDecrease +" "+fruits +" "+numberOfCommonTrans +" "+mostC+" "+largestTran+" "+averageTranCost+" "+percentagem1+" "+threeCol+" "+moneyIn)
+  console.log(month2 +" "+ map2+" "+totalSpent2 +" "+monthlyIncome2 +" "+week1No2 +" "+netBalanceIncreaseDecrease2 +" "+fruits2 +" "+numberOfCommonTrans2 +" "+mostC2+" "+largestTran2+" "+averageTranCost2+" "+percentagem12+" "+threeCol2+" "+moneyIn2);
+  console.log(month +" "+ map1+" "+totalSpent +" "+monthlyIncome +" "+week1No +" "+netBalanceIncreaseDecrease +" "+fruits +" "+numberOfCommonTrans +" "+mostC+" "+largestTran+" "+averageTranCost+" "+percentagem1+" "+threeCol+" "+moneyIn);
 
-  updateText()
-  updatem1Summary()
-  console.log(monthlyIncome+" "+ totalSpent)
+  updateText();
+  updatem1Summary();
+  console.log(monthlyIncome+" "+ totalSpent);
   setOptions(options2); 
   document.getElementById('formFileLg2').disabled = false;
 };
@@ -898,7 +944,7 @@ const updatePlot = () => {
 function submitClick(){
   updatePlot();
   if(invalid == true){
-    handleClickIt()
+    handleClickIt();
   }
   else{
       showDashboardBtn();
@@ -908,28 +954,28 @@ function submitClick(){
 function dashClick(){
   hideSubmitAndDash();
   updatePlot();
-  let form1= document.getElementById('form1')
-  form1.style.display = 'inherit'
+  let form1= document.getElementById('form1');
+  form1.style.display = 'inherit';
   document.getElementById('month2h1').innerText=month2;document.getElementById('month2h1p').innerText=month2;  document.getElementById('month2h1c').innerText=month2;document.getElementById('month2h1e').innerText=month2;document.getElementById('month2h1d').innerText=month2;document.getElementById('month2h1s').innerText=month2;document.getElementById('m1h1doh').innerText=month;
   document.getElementById('month1h1').innerText=month;document.getElementById('month1h1p').innerText=month;  document.getElementById('month1h1c').innerText=month;document.getElementById('month1h1e').innerText=month;document.getElementById('month1h1d').innerText=month;document.getElementById('month1h1s').innerText=month;document.getElementById('m2h1doh').innerText=month2;
-  console.log(month +" "+ month2)
+  console.log(month +" "+ month2);
 }
 
 function updateText(){
 
-  var arr = [week1No,week2No,week3No,week4No]
-  arr.sort()
-  var largest_element = arr[arr.length-1]
+  var arr = [week1No,week2No,week3No,week4No];
+  arr.sort();
+  var largest_element = arr[arr.length-1];
   var smallest_element = arr[0];
 
-  if(largest_element==week1No){document.getElementById('highestw1').innerText='1 - 7'; m1Highest=1}
-  else if(largest_element==week2No){document.getElementById('highestw1').innerText='7 - 14';m1Highest=2}
-  else if(largest_element==week3No){document.getElementById('highestw1').innerText='14 - 21';m1Highest=2}
-  else if(largest_element==week4No){document.getElementById('highestw1').innerText='21 - End of month';m1Highest=3}
-  if(smallest_element==week1No){document.getElementById('lowestw1').innerText='1 - 7'}
-  else if(smallest_element==week2No){document.getElementById('lowestw1').innerText='7 - 14'}
-  else if(smallest_element==week3No){document.getElementById('lowestw1').innerText='14 - 21'}
-  else if(smallest_element==week4No){document.getElementById('lowestw1').innerText='21 - End of month'}
+  if(largest_element==week1No){document.getElementById('highestw1').innerText='1 - 7'; m1Highest=1;}
+  else if(largest_element==week2No){document.getElementById('highestw1').innerText='7 - 14';m1Highest=2;}
+  else if(largest_element==week3No){document.getElementById('highestw1').innerText='14 - 21';m1Highest=2;}
+  else if(largest_element==week4No){document.getElementById('highestw1').innerText='21 - End of month';m1Highest=3;}
+  if(smallest_element==week1No){document.getElementById('lowestw1').innerText='1 - 7';}
+  else if(smallest_element==week2No){document.getElementById('lowestw1').innerText='7 - 14';}
+  else if(smallest_element==week3No){document.getElementById('lowestw1').innerText='14 - 21';}
+  else if(smallest_element==week4No){document.getElementById('lowestw1').innerText='21 - End of month';}
   document.getElementById('month1h1').innerText=month;document.getElementById('month1h1p').innerText=month;  document.getElementById('month1h1c').innerText=month;document.getElementById('month1h1e').innerText=month;document.getElementById('month1h1d').innerText=month;document.getElementById('month1h1s').innerText=month;
 
 
@@ -937,9 +983,9 @@ function updateText(){
 
 
   document.getElementById('mostcm1').innerText = mostC;
-  document.getElementById('m1percent').innerText = 'Made up ' +percentagem1+'% of all transactions'
+  document.getElementById('m1percent').innerText = 'Made up ' +percentagem1+'% of all transactions';
 
-  document.getElementById('m1expensive').innerText = '£'+largestTran
+  document.getElementById('m1expensive').innerText = '£'+largestTran;
   //m1expensive
   // document.getElementById('month1Title').innerText = month;  document.getElementById('month2Title').innerText = month2;
   document.getElementById('m1daily').innerText = '£'+(totalSpent/30).toFixed(2); document.getElementById('m2daily').innerText = '£'+(totalSpent2/30).toFixed(2);
@@ -948,42 +994,36 @@ function updateText(){
 
 }
 const readFile = e => {
-  const file = e.target.files[0]
+  const file = e.target.files[0];
   let reader = new FileReader();
 
   reader.onload = function(e) {
       let arrayBuffer = new Uint8Array(reader.result);
       console.log(arrayBuffer);
       resetValues();
-      testSubmit(arrayBuffer)
-     
-     
-    
-        handleClick();
-         
-     
-
-  }
+      testSubmit(arrayBuffer);          
+      handleClick();        
+  };
   reader.readAsArrayBuffer(file);
+};
 
 
-}
 const readFileB = e => {
-  const file = e.target.files[0]
+  const file = e.target.files[0];
   let reader = new FileReader();
 
   reader.onload = function(e) {
       let arrayBuffer = new Uint8Array(reader.result);
       console.log(arrayBuffer);
       resetValues2();
-      testSubmit2(arrayBuffer)
+      testSubmit2(arrayBuffer);
      
         handleClick();
      
-  }
+  };
   reader.readAsArrayBuffer(file);
 
-}
+};
 
   return (
     
@@ -1478,7 +1518,7 @@ const readFileB = e => {
       </div> 
         
       </div>
-  )
-}
+  );
+};
 
-export default Analytics
+export default Analytics;
