@@ -15,10 +15,14 @@ describe('e2e Tests', () => {
   it.only('T02 Should Successfully View Highest and Lowest Week',() =>{
     cy.reload()
     cy.visit('https://olliebooth2001.github.io/fe5/');
-    //  cy.get('button[id$="scrollToUploadBtn"]').click();
-    //  cy.wait(2000);
-    //  cy.get(':nth-child(1) > #formFileLg').attachFile('../media/State1.pdf');    
-    //  cy.get('.MuiAlert-message').should('exist');
+     cy.get('button[id$="scrollToUploadBtn"]').click();
+     cy.wait(2000);
+     cy.get(':nth-child(1) > #formFileLg').attachFile('../media/State1.pdf');    
+     cy.get('.MuiAlert-message').should('exist');
+     cy.wait(5000);
+
+     cy.get('button[id$="submitBtn"]').click();
+     
 
 
   });
