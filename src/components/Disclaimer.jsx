@@ -1,10 +1,10 @@
-import React from 'react'
-import moneyLogo from '../media/mooney.gif'
+import React from 'react';
+import moneyLogo from '../media/mooney.gif';
 import Button from '@mui/material/Button';
-import {AiOutlineClose,AiOutlineMenu,AiOutlineDashboard,AiOutlineInfoCircle,AiOutlineUpload,AiOutlineCaretDown,AiOutlineMessage} from 'react-icons/ai'
-import Analytics from './Analytics'
-import {Link} from 'react-scroll'
-import diagram from '../media/OCR.png'
+import {AiOutlineClose,AiOutlineMenu,AiOutlineDashboard,AiOutlineInfoCircle,AiOutlineUpload,AiOutlineCaretDown,AiOutlineMessage} from 'react-icons/ai';
+import Analytics from './Analytics';
+import {Link} from 'react-scroll';
+import diagram from '../media/OCR.png';
 
 
 
@@ -15,7 +15,8 @@ const Disclaimer = () => {
           
           <div className="flex flex-row flex-wrap py-2 pt-9 bg-orange-700" id='dis'>
 
-               
+         
+
               
           <main role="main" className="w-full sm:w-2/3 md:w-3/12 pt-50 px-2 flex items-top justify-center ">
                   
@@ -35,7 +36,7 @@ const Disclaimer = () => {
                     </div>
     
         </div>
-      )
-}
+      );
+};
 
-export default Disclaimer
+export default Disclaimer;
