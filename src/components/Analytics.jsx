@@ -1434,7 +1434,7 @@ const readFileB = e => {
                
               
                <main role="main" className="w-full sm:w-2/3 md:w-6/12 pt-20 px-2 ">
-               <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Transaction size variety</h1>
+               <h1 className='md:text-3xl sm:text-2xl text-l font-bold py-2 pl-7'>Comparing Average Daily Spend</h1>
 
                    <Bar data={dailySpend}/>
                </main>
