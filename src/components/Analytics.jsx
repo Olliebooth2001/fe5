@@ -1099,7 +1099,7 @@ const readFileB = e => {
 
    
       <div className='flex flex-auto justify-evenly' id='dash'style={{ opacity: 0}}>
-            <button  onClick={dashClick} className ='bg-[#00df9a] w-[300px] rounded-md font-bold my-6 mx-auto py-10 text-black flex flex-row justify-center hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300'> VIEW DASHBOARD<AiOutlineDashboard size={25}/></button>
+            <button id='dashBtn' onClick={dashClick} className ='bg-[#00df9a] w-[300px] rounded-md font-bold my-6 mx-auto py-10 text-black flex flex-row justify-center hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300'> VIEW DASHBOARD<AiOutlineDashboard id='dashSymbol' size={25}/></button>
       </div>
 
      
