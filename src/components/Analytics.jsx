@@ -374,7 +374,7 @@ async function testSubmit2(buffer) {
 
 
 
-async function testSubmit(buffer) {
+async function processFile(buffer) {
   const poller = await client.beginAnalyzeDocument(modelId, buffer, {
     onProgress: ({ status }) => {
       console.log(`status: ${status}`);
@@ -595,7 +595,7 @@ function updatem2Summary(){
   }
 
 
-testSubmit().catch((err) => {
+processFile().catch((err) => {
   console.error("The sample encountered an error:", err);
 });
 
@@ -990,9 +990,9 @@ function updateText(){
   // document.getElementById('month1Title').innerText = month;  document.getElementById('month2Title').innerText = month2;
   document.getElementById('m1daily').innerText = '£'+(totalSpent/30).toFixed(2); document.getElementById('m2daily').innerText = '£'+(totalSpent2/30).toFixed(2);
 
-
-
 }
+
+
 const readFile = e => {
   const file = e.target.files[0];
   let reader = new FileReader();
@@ -1001,7 +1001,7 @@ const readFile = e => {
       let arrayBuffer = new Uint8Array(reader.result);
       console.log(arrayBuffer);
       resetValues();
-      testSubmit(arrayBuffer);          
+      processFile(arrayBuffer);          
       handleClick();        
   };
   reader.readAsArrayBuffer(file);
