@@ -1440,7 +1440,7 @@ const readFileB = e => {
                </main>
           <aside className="w-full sm:w-1/3 md:w-2/4 px-2">
                <div className="top-0 p-4 w-full">
-               <p className='text-[#00df90] font-bold  text-l pt-10'>Comparing Transaction Amounts</p>
+               <p className='text-[#00df90] font-bold  text-l pt-10'>Comparing Average Daily Spend</p>
 
                <span>This chart shows you your average daily spend. This could be useful as it may be higher than expected and you may wish to investigate further where most of you daily expense is coming from.<br/><br/> <strong>Summary:</strong><br/></span>
 
