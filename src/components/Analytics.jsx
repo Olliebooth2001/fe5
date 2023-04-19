@@ -646,7 +646,7 @@ var mostCommon1 = {
   datasets:[
     {
       label:"Most Common Transaction",
-      data:[70,50],  
+      data:[7,9],  
     },
     {
       label:"All Other Transactions",
