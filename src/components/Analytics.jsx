@@ -1368,7 +1368,7 @@ const readFileB = e => {
                <span><br/>Net Balance : <strong> +£500</strong><br/></span>
 
                <span><strong><br/>June </strong>  </span>
-               <span><br/>Net Balance : <strong>-£700</strong><br/></span>
+               <span><br/>Net Balance : <strong>+£700</strong><br/></span>
 
                </div>
                 </aside>
@@ -1419,7 +1419,7 @@ const readFileB = e => {
 
 
                <span><strong><br/>July </strong>  </span>
-               <span><br/>Most Expensive Transaction : <strong> £500</strong></span>
+               <span><br/>Most Expensive Transaction : <strong> £350</strong></span>
 
                <span><strong><br/>June </strong>  </span>
                <span><br/>Most Expensive Transaction : <strong>£750</strong></span>
